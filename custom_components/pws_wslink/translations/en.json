@@ -16,7 +16,7 @@
                     "dev_debug_checkbox": "Developer log"
                 },
                 "data_description": {
-                    "dev_debug_checkbox": " Enable only if you want to send debuging data to the developer.",
+                    "dev_debug_checkbox": "Enable only if you want to send debuging data to the developer.",
                     "API_ID": "API ID is the Station ID you set in the Weather Station.",
                     "API_KEY": "API KEY is the password you set in the Weather Station.",
                     "WSLINK": "Enable WSLink API if the station is set to send data via WSLink."
