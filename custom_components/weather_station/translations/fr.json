@@ -1,0 +1,275 @@
+{
+    "config": {
+        "error": {
+            "valid_credentials_api": "Veuillez saisir un identifiant API valide.",
+            "valid_credentials_key": "Veuillez saisir une clé API valide.",
+            "valid_credentials_match": "L’identifiant API et la clé API ne doivent pas être identiques."
+        },
+        "step": {
+            "user": {
+                "description": "Saisissez l’identifiant API et la clé API afin que la station météo puisse accéder à Home Assistant.",
+                "title": "Configurer l’accès de la station météo",
+                "data": {
+                    "API_ID": "Identifiant API / Identifiant de station",
+                    "API_KEY": "Clé API / Mot de passe",
+                    "WSLINK": "API WSLink",
+                    "dev_debug_checkbox": "Journal de débogage"
+                },
+                "data_description": {
+                    "dev_debug_checkbox": "Activez uniquement si vous souhaitez envoyer des données de débogage au développeur.",
+                    "API_ID": "L’identifiant API correspond à l’identifiant de station défini dans la station météo.",
+                    "API_KEY": "La clé API correspond au mot de passe défini dans la station météo.",
+                    "WSLINK": "Activez l’API WSLink si la station est configurée pour envoyer les données via WSLink."
+                }
+            }
+        }
+    },
+    "options": {
+        "error": {
+            "valid_credentials_api": "Veuillez saisir un identifiant API valide.",
+            "valid_credentials_key": "Veuillez saisir une clé API valide.",
+            "valid_credentials_match": "L’identifiant API et la clé API ne doivent pas être identiques."
+        },
+        "step": {
+            "basic": {
+                "description": "Saisissez l’identifiant API et la clé API afin que la station météo puisse accéder à Home Assistant.",
+                "title": "Configurer les identifiants",
+                "data": {
+                    "API_ID": "Identifiant API / Identifiant de station",
+                    "API_KEY": "Clé API / Mot de passe",
+                    "WSLINK": "API WSLink",
+                    "dev_debug_checkbox": "Journal de débogage"
+                },
+                "data_description": {
+                    "dev_debug_checkbox": "Activez uniquement si vous souhaitez envoyer des données de débogage au développeur.",
+                    "API_ID": "L’identifiant API correspond à l’identifiant de station défini dans la station météo.",
+                    "API_KEY": "La clé API correspond au mot de passe défini dans la station météo.",
+                    "WSLINK": "Activez l’API WSLink si la station est configurée pour envoyer les données via WSLink."
+                }
+            },
+            "migration": {
+                "title": "Migration des statistiques",
+                "description": "Pour le bon fonctionnement des statistiques à long terme, il est nécessaire de migrer l’unité du capteur dans les statistiques à long terme. L’unité d’origine des statistiques à long terme pour les précipitations quotidiennes était mm/d, mais la station envoie uniquement des données en mm, sans différenciation temporelle.\n\nLe capteur à migrer concerne les précipitations quotidiennes. Si la bonne unité est déjà présente pour le capteur de précipitations quotidiennes (mm), la migration est déjà terminée.\n\nRésultat de migration pour le capteur : {migration_status}, avec un total de {migration_count} lignes converties.",
+                "data": {
+                    "sensor_to_migrate": "Capteur à migrer",
+                    "trigger_action": "Déclencher la migration"
+                },
+                "data_description": {
+                    "sensor_to_migrate": "Sélectionnez le capteur correct pour la migration des statistiques.\nLes valeurs du capteur seront conservées (pas de recalcul), seule l’unité dans les statistiques à long terme sera modifiée.",
+                    "trigger_action": "Déclenchez la migration des statistiques du capteur après vérification."
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "outside_battery": {
+                "name": "Batterie extérieure"
+            },
+            "indoor_battery": {
+                "name": "Batterie de la console"
+            },
+            "ch1_battery": {
+                "name": "Batterie canal 1"
+            },
+            "ch2_battery": {
+                "name": "Batterie canal 2"
+            },
+            "ch3_battery": {
+                "name": "Batterie canal 3"
+            },
+            "ch4_battery": {
+                "name": "Batterie canal 4"
+            },
+            "ch5_battery": {
+                "name": "Batterie canal 5"
+            },
+            "ch6_battery": {
+                "name": "Batterie canal 6"
+            },
+            "ch7_battery": {
+                "name": "Batterie canal 7"
+            },
+            "t5_battery": {
+                "name": "Batterie du capteur de foudre"
+            }
+        },
+        "sensor": {
+            "indoor_temp": {
+                "name": "Température intérieure"
+            },
+            "indoor_humidity": {
+                "name": "Humidité intérieure"
+            },
+            "outside_temp": {
+                "name": "Température extérieure"
+            },
+            "outside_humidity": {
+                "name": "Humidité extérieure"
+            },
+            "uv": {
+                "name": "Indice UV"
+            },
+            "baro_pressure": {
+                "name": "Pression barométrique"
+            },
+            "dew_point": {
+                "name": "Point de rosée"
+            },
+            "wind_speed": {
+                "name": "Vitesse du vent"
+            },
+            "wind_dir": {
+                "name": "Direction du vent"
+            },
+            "wind_gust": {
+                "name": "Rafale de vent"
+            },
+            "rain": {
+                "name": "Pluie"
+            },
+            "daily_rain": {
+                "name": "Précipitations quotidiennes"
+            },
+            "solar_radiation": {
+                "name": "Irradiance solaire"
+            },
+            "ch1_temp": {
+                "name": "Température canal 1"
+            },
+            "ch1_humidity": {
+                "name": "Humidité canal 1"
+            },
+            "ch2_temp": {
+                "name": "Température canal 2"
+            },
+            "ch2_humidity": {
+                "name": "Humidité canal 2"
+            },
+            "ch3_temp": {
+                "name": "Température canal 3"
+            },
+            "ch3_humidity": {
+                "name": "Humidité canal 3"
+            },
+            "ch4_temp": {
+                "name": "Température canal 4"
+            },
+            "ch4_humidity": {
+                "name": "Humidité canal 4"
+            },
+            "ch5_temp": {
+                "name": "Température canal 5"
+            },
+            "ch5_humidity": {
+                "name": "Humidité canal 5"
+            },
+            "ch6_temp": {
+                "name": "Température canal 6"
+            },
+            "ch6_humidity": {
+                "name": "Humidité canal 6"
+            },
+            "ch7_temp": {
+                "name": "Température canal 7"
+            },
+            "ch7_humidity": {
+                "name": "Humidité canal 7"
+            },
+            "heat_index": {
+                "name": "Température ressentie"
+            },
+            "feels_like": {
+                "name": "Température ressentie"
+            },
+            "chill_index": {
+                "name": "Refroidissement éolien"
+            },
+            "hourly_rain": {
+                "name": "Précipitations horaires"
+            },
+            "weekly_rain": {
+                "name": "Précipitations hebdomadaires"
+            },
+            "monthly_rain": {
+                "name": "Précipitations mensuelles"
+            },
+            "yearly_rain": {
+                "name": "Précipitations annuelles"
+            },
+            "wbgt_index": {
+                "name": "Indice WBGT"
+            },
+            "lightning_last_strike_time": {
+                "name": "Foudre (heure du dernier impact)"
+            },
+            "lightning_distance": {
+                "name": "Foudre (distance)"
+            },
+            "lightning_strike_count_last_hour": {
+                "name": "Foudre (nombre d’impacts dernière heure)"
+            },
+            "lightning_strike_count_during_5_minutes": {
+                "name": "Foudre (nombre d’impacts sur 5 minutes)"
+            },
+            "lightning_strike_count_during_30_minutes": {
+                "name": "Foudre (nombre d’impacts sur 30 minutes)"
+            },
+            "lightning_strike_count_during_1_hour": {
+                "name": "Foudre (nombre d’impacts sur 1 heure)"
+            },
+            "lightning_strike_count_during_1_day": {
+                "name": "Foudre (nombre d’impacts sur 1 jour)"
+            },
+            "hcho": {
+                "name": "Formaldéhyde (HCHO)"
+            },
+            "voc": {
+                "name": "Niveau de COV",
+                "state": {
+                    "unhealthy": "Mauvais",
+                    "poor": "Faible",
+                    "moderate": "Modéré",
+                    "good": "Bon",
+                    "excellent": "Excellent"
+                }
+            },
+            "t9_battery": {
+                "name": "Batterie du capteur HCHO/COV"
+            },
+            "co2": {
+                "name": "Dioxyde de carbone (CO²)"
+            },
+            "t10_battery": {
+                "name": "Batterie du capteur CO²"
+            },
+            "wind_azimuth": {
+                "name": "Cap",
+                "state": {
+                    "n": "N",
+                    "nne": "NNE",
+                    "ne": "NE",
+                    "ene": "ENE",
+                    "e": "E",
+                    "ese": "ESE",
+                    "se": "SE",
+                    "sse": "SSE",
+                    "s": "S",
+                    "ssw": "SSO",
+                    "sw": "SO",
+                    "wsw": "OSO",
+                    "w": "O",
+                    "wnw": "ONO",
+                    "nw": "NO",
+                    "nnw": "NNO"
+                }
+            }
+        }
+    },
+    "notify": {
+        "added": {
+            "title": "Nouveaux capteurs détectés pour la station météo.",
+            "message": "{added_sensors}\n"
+        }
+    }
+}

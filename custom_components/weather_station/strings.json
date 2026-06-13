@@ -1,0 +1,278 @@
+{
+    "config": {
+        "error": {
+            "valid_credentials_api": "Provide valid API ID.",
+            "valid_credentials_key": "Provide valid API KEY.",
+            "valid_credentials_match": "API ID and API KEY should not be the same."
+        },
+        "step": {
+            "user": {
+                "description": "Provide API ID and API KEY so the Weather Station can access HomeAssistant",
+                "title": "Configure access for Weather Station",
+                "data": {
+                    "API_ID": "API ID / Station ID",
+                    "API_KEY": "API KEY / Password",
+                    "WSLINK": "WSLink API",
+                    "dev_debug_checkbox": "Developer log"
+                },
+                "data_description": {
+                    "dev_debug_checkbox": " Enable only if you want to send debuging data to the developer.",
+                    "API_ID": "API ID is the Station ID you set in the Weather Station.",
+                    "API_KEY": "API KEY is the password you set in the Weather Station.",
+                    "WSLINK": "Enable WSLink API if the station is set to send data via WSLink."
+                }
+            }
+        }
+    },
+    "options": {
+        "error": {
+            "valid_credentials_api": "Provide valid API ID.",
+            "valid_credentials_key": "Provide valid API KEY.",
+            "valid_credentials_match": "API ID and API KEY should not be the same."
+        },
+        "step": {
+            "basic": {
+                "description": "Provide API ID and API KEY so the Weather Station can access HomeAssistant",
+                "title": "Configure credentials",
+                "data": {
+                    "API_ID": "API ID / Station ID",
+                    "API_KEY": "API KEY / Password",
+                    "WSLINK": "WSLink API",
+                    "dev_debug_checkbox": "Developer log"
+                },
+                "data_description": {
+                    "dev_debug_checkbox": " Enable only if you want to send debuging data to the developer.",
+                    "API_ID": "API ID is the Station ID you set in the Weather Station.",
+                    "API_KEY": "API KEY is the password you set in the Weather Station.",
+                    "WSLINK": "Enable WSLink API if the station is set to send data via WSLink."
+                }
+            },
+            "migration": {
+                "title": "Statistic migration.",
+                "description": "For the correct functioning of long-term statistics, it is necessary to migrate the sensor unit in the long-term statistics. The original unit of long-term statistics for daily precipitation was in mm/d, however, the station only sends data in mm without time differentiation.\n\n The sensor to be migrated is for daily precipitation. If the correct value is already in the list for the daily precipitation sensor (mm), then the migration is already complete.\n\n Migration result for the sensor: {migration_status}, a total of {migration_count} rows converted.",
+                "data": {
+                    "sensor_to_migrate": "Sensor to migrate",
+                    "trigger_action": "Trigger migration"
+                },
+                "data_description": {
+                    "sensor_to_migrate": "Select the correct sensor for statistics migration.\nThe sensor values will be preserved, they will not be recalculated, only the unit in the long-term statistics will be changed.",
+                    "trigger_action": "Trigger the sensor statistics migration after checking."
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "outside_battery": {
+                "name": "Outside battery"
+            },
+            "indoor_battery": {
+                "name": "Console battery"
+            },
+            "ch1_battery": {
+                "name": "Channel 1 battery"
+            },
+            "ch2_battery": {
+                "name": "Channel 2 battery"
+            },
+            "ch3_battery": {
+                "name": "Channel 3 battery"
+            },
+            "ch4_battery": {
+                "name": "Channel 4 battery"
+            },
+            "ch5_battery": {
+                "name": "Channel 5 battery"
+            },
+            "ch6_battery": {
+                "name": "Channel 6 battery"
+            },
+            "ch7_battery": {
+                "name": "Channel 7 battery"
+            },
+            "t5_battery": {
+                "name": "Lightning sensor battery"
+            }
+        },
+        "sensor": {
+            "indoor_temp": {
+                "name": "Indoor temperature"
+            },
+            "indoor_humidity": {
+                "name": "Indoor humidity"
+            },
+            "outside_temp": {
+                "name": "Outside Temperature"
+            },
+            "outside_humidity": {
+                "name": "Outside humidity"
+            },
+            "uv": {
+                "name": "UV index"
+            },
+            "baro_pressure": {
+                "name": "Barometric pressure"
+            },
+            "dew_point": {
+                "name": "Dew point"
+            },
+            "wind_speed": {
+                "name": "Wind speed"
+            },
+            "wind_dir": {
+                "name": "Wind direction"
+            },
+            "wind_gust": {
+                "name": "Wind gust"
+            },
+            "rain": {
+                "name": "Rain"
+            },
+            "daily_rain": {
+                "name": "Daily precipitation"
+            },
+            "solar_radiation": {
+                "name": "Solar irradiance"
+            },
+            "ch1_temp": {
+                "name": "Channel 1 temperature"
+            },
+            "ch1_humidity": {
+                "name": "Channel 1 humidity"
+            },
+            "ch2_temp": {
+                "name": "Channel 2 temperature"
+            },
+            "ch2_humidity": {
+                "name": "Channel 2 humidity"
+            },
+            "ch3_temp": {
+                "name": "Channel 3 temperature"
+            },
+            "ch3_humidity": {
+                "name": "Channel 3 humidity"
+            },
+            "ch4_temp": {
+                "name": "Channel 4 temperature"
+            },
+            "ch4_humidity": {
+                "name": "Channel 4 humidity"
+            },
+            "ch5_temp": {
+                "name": "Channel 5 temperature"
+            },
+            "ch5_humidity": {
+                "name": "Channel 5 humidity"
+            },
+            "ch6_temp": {
+                "name": "Channel 6 temperature"
+            },
+            "ch6_humidity": {
+                "name": "Channel 6 humidity"
+            },
+            "ch7_temp": {
+                "name": "Channel 7 temperature"
+            },
+            "ch7_humidity": {
+                "name": "Channel 7 humidity"
+            },
+            "heat_index": {
+                "name": "Apparent temperature"
+            },
+            "feels_like": {
+                "name": "Feels like temperature"
+            },
+            "chill_index": {
+                "name": "Wind chill temperature"
+            },
+            "hourly_rain": {
+                "name": "Hourly precipitation"
+            },
+            "weekly_rain": {
+                "name": "Weekly precipitation"
+            },
+            "monthly_rain": {
+                "name": "Monthly precipitation"
+            },
+            "yearly_rain": {
+                "name": "Yearly precipitation"
+            },
+            "wbgt_index": {
+                "name": "WBGT index"
+            },
+            "lightning_last_strike_time": {
+                "name": "Lightning (last strike time)"
+            },
+            "lightning_distance": {
+                "name": "Lightning (distance)"
+            },
+            "lightning_strike_count_last_hour": {
+                "name": "Lightning (strike count last hour)"
+            },
+            "lightning_strike_count_during_5_minutes": {
+                "name": "Lightning (strike count during 5 minutes)"
+            },
+            "lightning_strike_count_during_30_minutes": {
+                "name": "Lightning (strike count during 30 minutes)"
+            },
+            "lightning_strike_count_during_1_hour": {
+                "name": "Lightning (strike count during 1 hour)"
+            },
+            "lightning_strike_count_during_1_day": {
+                "name": "Lightning (strike count during 1 day)"
+            },
+            "hcho": {
+                "name": "Formaldehyde (HCHO)"
+            },
+            "voc": {
+                "name": "VOC level",
+                "state": {
+                    "unhealthy": "Unhealthy",
+                    "poor": "Poor",
+                    "moderate": "Moderate",
+                    "good": "Good",
+                    "excellent": "Excellent"
+                }
+            },
+            "t9_battery": {
+                "name": "HCHO/VOC sensor battery"
+            },
+            "co2": {
+                "name": "Carbon dioxyde (CO²)"
+            },
+            "t10_battery": {
+                "name": "CO² sensor battery"
+            },
+            "wind_azimuth": {
+                "name": "Bearing",
+                "state": {
+                    "n": "N",
+                    "nne": "NNE",
+                    "ne": "NE",
+                    "ene": "ENE",
+                    "e": "E",
+                    "ese": "ESE",
+                    "se": "SE",
+                    "sse": "SSE",
+                    "s": "S",
+                    "ssw": "SSW",
+                    "sw": "SW",
+                    "wsw": "WSW",
+                    "w": "W",
+                    "wnw": "WNW",
+                    "nw": "NW",
+                    "nnw": "NNW"
+                },
+                "wbgt_temp": {
+                    "name": "WBGT temperature"
+                }
+            }
+        }
+    },
+    "notify": {
+        "added": {
+            "title": "New sensors for Weather Station found.",
+            "message": "{added_sensors}\n"
+        }
+    }
+}
