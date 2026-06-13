@@ -1,6 +1,6 @@
 {
-  "domain": "weather_station",
-  "name": "Weather Station",
+  "domain": "pws_wslink",
+  "name": "PWS / WSLink Weather Station",
   "codeowners": [
     "@svalsemey"
   ],

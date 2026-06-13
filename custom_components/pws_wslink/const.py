@@ -3,7 +3,7 @@
 from enum import StrEnum
 from typing import Final
 
-DOMAIN = "weather_station"
+DOMAIN = "pws_wslink"
 DEFAULT_URL = "/weatherstation/updateweatherstation.php"
 WSLINK_URL = "/data/upload.php"
 DATABASE_PATH = "/config/home-assistant_v2.db"
@@ -88,10 +88,14 @@ WBGT_TEMP: Final = "wbgt_temp"
 LIGHTNING_STRIKE_TIME: Final = "lightning_last_strike_time"
 LIGHTNING_DISTANCE: Final = "lightning_distance"
 LIGHTNING_STRIKE_COUNT_LAST_HOUR: Final = "lightning_strike_count_last_hour"
-LIGHTNING_STRIKE_COUNT_DURING_5_MINUTES: Final = "lightning_strike_count_during_5_minutes"
-LIGHTNING_STRIKE_COUNT_DURING_30_MINUTES : Final = "lightning_strike_count_during_30_minutes"
-LIGHTNING_STRIKE_COUNT_DURING_1_HOUR : Final = "lightning_strike_count_during_1_hour"
-LIGHTNING_STRIKE_COUNT_DURING_1_DAY : Final = "lightning_strike_count_during_1_day"
+LIGHTNING_STRIKE_COUNT_DURING_5_MINUTES: Final = (
+    "lightning_strike_count_during_5_minutes"
+)
+LIGHTNING_STRIKE_COUNT_DURING_30_MINUTES: Final = (
+    "lightning_strike_count_during_30_minutes"
+)
+LIGHTNING_STRIKE_COUNT_DURING_1_HOUR: Final = "lightning_strike_count_during_1_hour"
+LIGHTNING_STRIKE_COUNT_DURING_1_DAY: Final = "lightning_strike_count_during_1_day"
 T5_BATTERY: Final = "t5_battery"
 T5_CONN: Final = "t5_conn"
 HCHO: Final = "hcho"
@@ -197,7 +201,7 @@ REMAP_WSLINK_ITEMS: dict[str, str] = {
     "t5lscn": T5_CONN,
     "t9hcho": HCHO,
     "t9voclv": VOC,
-    "t9bat": T9_BATTERY,    # T9 battery is 0-5, where 5 is full
+    "t9bat": T9_BATTERY,  # T9 battery is 0-5, where 5 is full
     "t10co2": CO2,
     "t10bat": T10_BATTERY,  # T10 battery is 0-5, where 5 is full
 }

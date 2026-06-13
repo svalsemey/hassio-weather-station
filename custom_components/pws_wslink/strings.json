@@ -197,8 +197,8 @@
             "yearly_rain": {
                 "name": "Yearly precipitation"
             },
-            "wbgt_index": {
-                "name": "WBGT index"
+            "wbgt_temp": {
+                "name": "Wet-bulb globe temperature"
             },
             "lightning_last_strike_time": {
                 "name": "Lightning (last strike time)"
@@ -263,9 +263,6 @@
                     "nw": "NW",
                     "nnw": "NNW"
                 }
-            },
-            "wbgt_temp": {
-                "name": "Wet-bulb globe temperature"
             }
         }
     },
