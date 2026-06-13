@@ -138,7 +138,7 @@ Special thanks to **Lukas Svoboda** ([@schizza](https://github.com/schizza)) for
 
 - https://github.com/schizza/SWS-12500-custom-component
 
-This `weather_station` integration has been **very largely based** on those works.
+This integration has been **very largely based** on those works.
 
 ---
 
