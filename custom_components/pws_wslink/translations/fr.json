@@ -4,7 +4,7 @@
             "valid_credentials_api": "Veuillez saisir un identifiant API valide.",
             "valid_credentials_key": "Veuillez saisir une clé API valide.",
             "valid_credentials_match": "L’identifiant API et la clé API ne doivent pas être identiques.",
-            "confirm_wslink_non_https_required": "Veuillez confirmer pour continuer."
+            "confirm_https": "Veuillez confirmer pour continuer."
         },
         "step": {
             "user": {
@@ -23,11 +23,11 @@
                     "dev_debug_checkbox": "Activez uniquement si vous souhaitez envoyer des données de débogage au développeur."
                 }
             },
-            "wslink_warning": {
+            "https_warning": {
                 "title": "WSLink avec Home Assistant non-HTTPS",
                 "description": "Les stations météo WSLink exigent souvent HTTPS. Aucun HTTPS n’a été détecté dans les URL de votre Home Assistant. Si votre station envoie WSLink en HTTPS, installez l’add-on proxy WSLink ({wslink_addon_url}) ou utilisez votre propre proxy HTTPS.",
                 "data": {
-                    "confirm_wslink_non_https": "Je comprends et je souhaite continuer"
+                    "confirm_https": "Je comprends et je souhaite continuer"
                 }
             }
         }
@@ -37,7 +37,7 @@
             "valid_credentials_api": "Veuillez saisir un identifiant API valide.",
             "valid_credentials_key": "Veuillez saisir une clé API valide.",
             "valid_credentials_match": "L’identifiant API et la clé API ne doivent pas être identiques.",
-            "confirm_wslink_non_https_required": "Veuillez confirmer pour continuer."
+            "confirm_https": "Veuillez confirmer pour continuer."
         },
         "step": {
             "basic": {
@@ -68,11 +68,11 @@
                     "trigger_action": "Déclenchez la migration des statistiques du capteur après vérification."
                 }
             },
-            "wslink_warning": {
-                "title": "WSLink avec Home Assistant non-HTTPS",
-                "description": "Les stations météo WSLink exigent souvent HTTPS. Aucun HTTPS n’a été détecté dans les URL de votre Home Assistant. Si votre station envoie WSLink en HTTPS, installez l’add-on proxy WSLink ({wslink_addon_url}) ou utilisez votre propre proxy HTTPS.",
+            "https_warning": {
+                "title": "Home Assistant non-HTTPS",
+                "description": "Les stations météo PWS/WSLink récentes exigent souvent HTTPS. Aucun HTTPS n’a été détecté dans les URL de votre Home Assistant. Si votre station envoie des données en HTTPS, installez l’add-on proxy WSLink ({wslink_addon_url}) ou utilisez votre propre proxy HTTPS.",
                 "data": {
-                    "confirm_wslink_non_https": "Je comprends et je souhaite continuer"
+                    "confirm_https": "Je comprends et je souhaite continuer"
                 }
             }
         }
@@ -80,48 +80,48 @@
     "entity": {
         "binary_sensor": {
             "outside_battery": {
-                "name": "Batterie extérieure"
+                "name": "Module extérieur Batterie"
             },
             "indoor_battery": {
-                "name": "Batterie de la console"
+                "name": "Module intérieur batterie"
             },
             "ch1_battery": {
-                "name": "Batterie canal 1"
+                "name": "Canal 1 batterie"
             },
             "ch2_battery": {
-                "name": "Batterie canal 2"
+                "name": "Canal 2 batterie"
             },
             "ch3_battery": {
-                "name": "Batterie canal 3"
+                "name": "Canal 3 batterie"
             },
             "ch4_battery": {
-                "name": "Batterie canal 4"
+                "name": "Canal 4 batterie"
             },
             "ch5_battery": {
-                "name": "Batterie canal 5"
+                "name": "Canal 5 batterie"
             },
             "ch6_battery": {
-                "name": "Batterie canal 6"
+                "name": "Canal 6 batterie"
             },
             "ch7_battery": {
-                "name": "Batterie canal 7"
+                "name": "Canal 7 batterie"
             },
             "t5_battery": {
-                "name": "Batterie du capteur de foudre"
+                "name": "Capteur de foudre batterie"
             }
         },
         "sensor": {
             "indoor_temp": {
-                "name": "Température intérieure"
+                "name": "Module intérieur température"
             },
             "indoor_humidity": {
-                "name": "Humidité intérieure"
+                "name": "Module intérieur humidité"
             },
             "outside_temp": {
-                "name": "Température extérieure"
+                "name": "Module extérieur température"
             },
             "outside_humidity": {
-                "name": "Humidité extérieure"
+                "name": "Module extérieur humidité"
             },
             "uv": {
                 "name": "Indice UV"
@@ -133,85 +133,106 @@
                 "name": "Point de rosée"
             },
             "wind_speed": {
-                "name": "Vitesse du vent"
-            },
-            "wind_dir": {
-                "name": "Direction du vent"
+                "name": "Vent (vitesse)"
             },
             "wind_gust": {
-                "name": "Rafale de vent"
+                "name": "Vent (rafales)"
             },
-            "rain": {
-                "name": "Pluie"
+            "wind_dir": {
+                "name": "Vent (direction)"
             },
-            "daily_rain": {
-                "name": "Précipitations quotidiennes"
+            "wind_azimuth": {
+                "name": "Vent (orientation)",
+                "state": {
+                    "n": "N",
+                    "nne": "NNE",
+                    "ne": "NE",
+                    "ene": "ENE",
+                    "e": "E",
+                    "ese": "ESE",
+                    "se": "SE",
+                    "sse": "SSE",
+                    "s": "S",
+                    "ssw": "SSO",
+                    "sw": "SO",
+                    "wsw": "OSO",
+                    "w": "O",
+                    "wnw": "ONO",
+                    "nw": "NO",
+                    "nnw": "NNO"
+                }
+            },
+            "rain_rate": {
+                "name": "Précipitations"
+            },
+            "rainfall_hourly": {
+                "name": "Précipitations (cumul horaire)"
+            },
+            "rainfall_daily": {
+                "name": "Précipitations (cumul quotidien)"
+            },
+            "rainfall_weekly": {
+                "name": "Précipitations (cumul hebdomadaire)"
+            },
+            "rainfall_monthly": {
+                "name": "Précipitations (cumul mensuel)"
+            },
+            "rainfall_yearly": {
+                "name": "Précipitations (cumul annuel)"
             },
             "solar_radiation": {
                 "name": "Irradiance solaire"
             },
             "ch1_temp": {
-                "name": "Température canal 1"
+                "name": "Canal 1 température"
             },
             "ch1_humidity": {
-                "name": "Humidité canal 1"
+                "name": "Canal 1 humidité"
             },
             "ch2_temp": {
-                "name": "Température canal 2"
+                "name": "Canal 2 température"
             },
             "ch2_humidity": {
-                "name": "Humidité canal 2"
+                "name": "Canal 2 humidité"
             },
             "ch3_temp": {
-                "name": "Température canal 3"
+                "name": "Canal 3 température"
             },
             "ch3_humidity": {
-                "name": "Humidité canal 3"
+                "name": "Canal 3 humidité"
             },
             "ch4_temp": {
-                "name": "Température canal 4"
+                "name": "Canal 4 température"
             },
             "ch4_humidity": {
-                "name": "Humidité canal 4"
+                "name": "Canal 4 humidité"
             },
             "ch5_temp": {
-                "name": "Température canal 5"
+                "name": "Canal 5 température"
             },
             "ch5_humidity": {
-                "name": "Humidité canal 5"
+                "name": "Canal 5 humidité"
             },
             "ch6_temp": {
-                "name": "Température canal 6"
+                "name": "Canal 6 température"
             },
             "ch6_humidity": {
-                "name": "Humidité canal 6"
+                "name": "Canal 6 humidité"
             },
             "ch7_temp": {
-                "name": "Température canal 7"
+                "name": "Canal 7 température"
             },
             "ch7_humidity": {
-                "name": "Humidité canal 7"
+                "name": "Canal 7 humidité"
             },
             "heat_index": {
-                "name": "Température ressentie"
+                "name": "Indice de chaleur"
             },
             "feels_like": {
                 "name": "Température ressentie"
             },
             "chill_index": {
                 "name": "Refroidissement éolien"
-            },
-            "hourly_rain": {
-                "name": "Précipitations horaires"
-            },
-            "weekly_rain": {
-                "name": "Précipitations hebdomadaires"
-            },
-            "monthly_rain": {
-                "name": "Précipitations mensuelles"
-            },
-            "yearly_rain": {
-                "name": "Précipitations annuelles"
             },
             "wbgt_temp": {
                 "name": "Température au thermomètre-globe mouillé"
@@ -251,34 +272,13 @@
                 }
             },
             "t9_battery": {
-                "name": "Batterie du capteur HCHO/COV"
+                "name": "Capteur HCHO/COV batterie"
             },
             "co2": {
                 "name": "Dioxyde de carbone (CO²)"
             },
             "t10_battery": {
-                "name": "Batterie du capteur CO²"
-            },
-            "wind_azimuth": {
-                "name": "Cap",
-                "state": {
-                    "n": "N",
-                    "nne": "NNE",
-                    "ne": "NE",
-                    "ene": "ENE",
-                    "e": "E",
-                    "ese": "ESE",
-                    "se": "SE",
-                    "sse": "SSE",
-                    "s": "S",
-                    "ssw": "SSO",
-                    "sw": "SO",
-                    "wsw": "OSO",
-                    "w": "O",
-                    "wnw": "ONO",
-                    "nw": "NO",
-                    "nnw": "NNO"
-                }
+                "name": "Capteur CO² batterie"
             }
         }
     },

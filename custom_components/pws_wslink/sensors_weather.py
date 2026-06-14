@@ -32,14 +32,14 @@ from .const import (
     CH7_HUMIDITY,
     CH7_TEMP,
     CHILL_INDEX,
-    DAILY_RAIN,
+    RAINFALL_DAILY,
     DEW_POINT,
     HEAT_INDEX,
     INDOOR_HUMIDITY,
     INDOOR_TEMP,
     OUTSIDE_HUMIDITY,
     OUTSIDE_TEMP,
-    RAIN,
+    RAIN_RATE,
     SOLAR_RADIATION,
     UV,
     WIND_AZIMUTH,
@@ -48,8 +48,8 @@ from .const import (
     WIND_SPEED,
     UnitOfDir,
 )
-from .sensors_common import WeatherSensorEntityDescription
 from .helpers import wind_dir_to_text
+from .sensors_common import WeatherSensorEntityDescription
 
 SENSOR_TYPES_WEATHER_API: tuple[WeatherSensorEntityDescription, ...] = (
     WeatherSensorEntityDescription(
@@ -146,25 +146,25 @@ SENSOR_TYPES_WEATHER_API: tuple[WeatherSensorEntityDescription, ...] = (
         translation_key=WIND_AZIMUTH,
     ),
     WeatherSensorEntityDescription(
-        key=RAIN,
+        key=RAIN_RATE,
         native_unit_of_measurement=UnitOfVolumetricFlux.INCHES_PER_HOUR,
         device_class=SensorDeviceClass.PRECIPITATION_INTENSITY,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_unit_of_measurement=UnitOfVolumetricFlux.MILLIMETERS_PER_HOUR,
         suggested_display_precision=2,
         icon="mdi:weather-pouring",
-        translation_key=RAIN,
+        translation_key=RAIN_RATE,
         value_fn=lambda data: cast("float", data),
     ),
     WeatherSensorEntityDescription(
-        key=DAILY_RAIN,
+        key=RAINFALL_DAILY,
         native_unit_of_measurement=UnitOfPrecipitationDepth.INCHES,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.PRECIPITATION,
         suggested_unit_of_measurement=UnitOfPrecipitationDepth.MILLIMETERS,
         suggested_display_precision=2,
         icon="mdi:weather-pouring",
-        translation_key=DAILY_RAIN,
+        translation_key=RAINFALL_DAILY,
         value_fn=lambda data: cast("float", data),
     ),
     WeatherSensorEntityDescription(

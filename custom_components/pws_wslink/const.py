@@ -43,12 +43,12 @@ WIND_SPEED: Final = "wind_speed"
 WIND_GUST: Final = "wind_gust"
 WIND_DIR: Final = "wind_dir"
 WIND_AZIMUTH: Final = "wind_azimuth"
-RAIN: Final = "rain"
-HOURLY_RAIN: Final = "hourly_rain"
-WEEKLY_RAIN: Final = "weekly_rain"
-MONTHLY_RAIN: Final = "monthly_rain"
-YEARLY_RAIN: Final = "yearly_rain"
-DAILY_RAIN: Final = "daily_rain"
+RAIN_RATE: Final = "rain_rate"
+RAINFALL_HOURLY: Final = "rainfall_hourly"
+RAINFALL_WEEKLY: Final = "rainfall_weekly"
+RAINFALL_MONTHLY: Final = "rainfall_monthly"
+RAINFALL_YEARLY: Final = "rainfall_yearly"
+RAINFALL_DAILY: Final = "rainfall_daily"
 SOLAR_RADIATION: Final = "solar_radiation"
 INDOOR_TEMP: Final = "indoor_temp"
 INDOOR_HUMIDITY: Final = "indoor_humidity"
@@ -116,8 +116,8 @@ REMAP_ITEMS: dict[str, str] = {
     "windspeedmph": WIND_SPEED,
     "windgustmph": WIND_GUST,
     "winddir": WIND_DIR,
-    "rainin": RAIN,
-    "dailyrainin": DAILY_RAIN,
+    "rainin": RAIN_RATE,
+    "dailyrainin": RAINFALL_DAILY,
     "solarradiation": SOLAR_RADIATION,
     "indoortempf": INDOOR_TEMP,
     "indoorhumidity": INDOOR_HUMIDITY,
@@ -150,17 +150,17 @@ REMAP_WSLINK_ITEMS: dict[str, str] = {
     "t1wdir": WIND_DIR,
     "t1ws": WIND_SPEED,
     "t1wgust": WIND_GUST,
-    "t1rainra": RAIN,
-    "t1raindy": DAILY_RAIN,
+    "t1rainra": RAIN_RATE,
+    "t1raindy": RAINFALL_DAILY,
     "t1solrad": SOLAR_RADIATION,
     "t1feels": FEELS_LIKE,
     "t1chill": CHILL_INDEX,
     "t1uvi": UV,
     "t1heat": HEAT_INDEX,
-    "t1rainhr": HOURLY_RAIN,
-    "t1rainwy": WEEKLY_RAIN,
-    "t1rainmth": MONTHLY_RAIN,
-    "t1rainyr": YEARLY_RAIN,
+    "t1rainhr": RAINFALL_HOURLY,
+    "t1rainwy": RAINFALL_WEEKLY,
+    "t1rainmth": RAINFALL_MONTHLY,
+    "t1rainyr": RAINFALL_YEARLY,
     "t1bat": OUTSIDE_BATTERY,
     "t1cn": OUTSIDE_CONNECTION,
     "t234c1tem": CH1_TEMP,

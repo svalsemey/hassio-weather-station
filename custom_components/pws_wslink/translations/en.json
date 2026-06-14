@@ -4,7 +4,7 @@
             "valid_credentials_api": "Provide valid API ID.",
             "valid_credentials_key": "Provide valid API KEY.",
             "valid_credentials_match": "API ID and API KEY should not be the same.",
-            "confirm_wslink_non_https_required": "Please confirm before continuing."
+            "confirm_https": "Please confirm before continuing."
         },
         "step": {
             "user": {
@@ -23,11 +23,11 @@
                     "dev_debug_checkbox": "Enable only if you want to send debuging data to the developer."
                 }
             },
-            "wslink_warning": {
+            "https_warning": {
                 "title": "WSLink over non-HTTPS Home Assistant",
                 "description": "WSLink weather stations often require HTTPS. HTTPS was not detected on your Home Assistant URLs. If your station sends WSLink over HTTPS, install the WSLink proxy add-on ({wslink_addon_url}) or use your own HTTPS reverse proxy.",
                 "data": {
-                    "confirm_wslink_non_https": "I understand and want to continue"
+                    "confirm_https": "I understand and want to continue"
                 }
             }
         }
@@ -37,7 +37,7 @@
             "valid_credentials_api": "Provide valid API ID.",
             "valid_credentials_key": "Provide valid API KEY.",
             "valid_credentials_match": "API ID and API KEY should not be the same.",
-            "confirm_wslink_non_https_required": "Please confirm before continuing."
+            "confirm_https": "Please confirm before continuing."
         },
         "step": {
             "basic": {
@@ -68,11 +68,11 @@
                     "trigger_action": "Trigger the sensor statistics migration after checking."
                 }
             },
-            "wslink_warning": {
-                "title": "WSLink over non-HTTPS Home Assistant",
-                "description": "WSLink weather stations often require HTTPS. HTTPS was not detected on your Home Assistant URLs. If your station sends WSLink over HTTPS, install the WSLink proxy add-on ({wslink_addon_url}) or use your own HTTPS reverse proxy.",
+            "https_warning": {
+                "title": "Non-HTTPS Home Assistant",
+                "description": "Recent PWS/WSLink weather stations often require HTTPS. HTTPS was not detected on your Home Assistant URLs. If your station sends data over HTTPS, install the WSLink proxy add-on ({wslink_addon_url}) or use your own HTTPS reverse proxy.",
                 "data": {
-                    "confirm_wslink_non_https": "I understand and want to continue"
+                    "confirm_https": "I understand and want to continue"
                 }
             }
         }
@@ -135,17 +135,50 @@
             "wind_speed": {
                 "name": "Wind speed"
             },
-            "wind_dir": {
-                "name": "Wind direction"
-            },
             "wind_gust": {
                 "name": "Wind gust"
             },
-            "rain": {
-                "name": "Rain"
+            "wind_dir": {
+                "name": "Wind direction"
             },
-            "daily_rain": {
-                "name": "Daily precipitation"
+            "wind_azimuth": {
+                "name": "Bearing",
+                "state": {
+                    "n": "N",
+                    "nne": "NNE",
+                    "ne": "NE",
+                    "ene": "ENE",
+                    "e": "E",
+                    "ese": "ESE",
+                    "se": "SE",
+                    "sse": "SSE",
+                    "s": "S",
+                    "ssw": "SSW",
+                    "sw": "SW",
+                    "wsw": "WSW",
+                    "w": "W",
+                    "wnw": "WNW",
+                    "nw": "NW",
+                    "nnw": "NNW"
+                }
+            },
+            "rain_rate": {
+                "name": "Rain rate"
+            },
+            "rainfall_hourly": {
+                "name": "Rainfall (hourly total)"
+            },
+            "rainfall_daily": {
+                "name": "Rainfall (daily total)"
+            },
+            "rainfall_weekly": {
+                "name": "Rainfall (weekly total)"
+            },
+            "rainfall_monthly": {
+                "name": "Rainfall (monthly total)"
+            },
+            "rainfall_yearly": {
+                "name": "Rainfall (yearly total)"
             },
             "solar_radiation": {
                 "name": "Solar irradiance"
@@ -193,25 +226,13 @@
                 "name": "Channel 7 humidity"
             },
             "heat_index": {
-                "name": "Apparent temperature"
+                "name": "Heat index"
             },
             "feels_like": {
                 "name": "Feels like temperature"
             },
             "chill_index": {
                 "name": "Wind chill"
-            },
-            "hourly_rain": {
-                "name": "Hourly precipitation"
-            },
-            "weekly_rain": {
-                "name": "Weekly precipitation"
-            },
-            "monthly_rain": {
-                "name": "Monthly precipitation"
-            },
-            "yearly_rain": {
-                "name": "Yearly precipitation"
             },
             "wbgt_temp": {
                 "name": "Wet-bulb globe temperature"
@@ -258,27 +279,6 @@
             },
             "t10_battery": {
                 "name": "CO² sensor battery"
-            },
-            "wind_azimuth": {
-                "name": "Bearing",
-                "state": {
-                    "n": "N",
-                    "nne": "NNE",
-                    "ne": "NE",
-                    "ene": "ENE",
-                    "e": "E",
-                    "ese": "ESE",
-                    "se": "SE",
-                    "sse": "SSE",
-                    "s": "S",
-                    "ssw": "SSW",
-                    "sw": "SW",
-                    "wsw": "WSW",
-                    "w": "W",
-                    "wnw": "WNW",
-                    "nw": "NW",
-                    "nnw": "NNW"
-                }
             }
         }
     },
