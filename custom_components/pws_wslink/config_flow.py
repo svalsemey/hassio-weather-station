@@ -182,7 +182,7 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
         elif user_input[API_KEY] == user_input[API_ID]:
             errors["base"] = "valid_credentials_match"
         else:
-            if user_input.get(WSLINK, False) and not ha_https_enabled():
+            if user_input.get(WSLINK, False) and not ha_https_enabled(self):
                 self._pending_user_input = user_input
                 return await self.async_step_wslink_warning()
 
