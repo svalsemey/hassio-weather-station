@@ -18,8 +18,11 @@ API_ID = "API_ID"
 SENSORS_TO_LOAD: Final = "sensors_to_load"
 SENSOR_TO_MIGRATE: Final = "sensor_to_migrate"
 
+API_MODE: Final = "api_mode"
+API_MODE_PWS: Final = "pws"
+API_MODE_WSLINK: Final = "wslink"
+
 DEV_DBG: Final = "dev_debug_checkbox"
-WSLINK: Final = "wslink"
 
 INVALID_CREDENTIALS: Final = [
     "API",

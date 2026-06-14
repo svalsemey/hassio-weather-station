@@ -15,6 +15,8 @@ from homeassistant.util import dt as dt_util
 
 from . import WeatherDataUpdateCoordinator
 from .const import (
+    API_MODE,
+    API_MODE_WSLINK,
     BATTERY_LIST,
     CHILL_INDEX,
     DOMAIN,
@@ -29,7 +31,6 @@ from .const import (
     WIND_AZIMUTH,
     WIND_DIR,
     WIND_SPEED,
-    WSLINK,
     UnitOfBat,
 )
 from .helpers import (
@@ -57,9 +58,9 @@ async def async_setup_entry(
 
     sensors_to_load: list = []
     sensors: list = []
-    _wslink = config_entry.options.get(WSLINK)
+    is_wslink = config_entry.options.get(API_MODE) == API_MODE_WSLINK
 
-    sensor_types = SENSOR_TYPES_WSLINK if _wslink else SENSOR_TYPES_PWS
+    sensor_types = SENSOR_TYPES_WSLINK if is_wslink else SENSOR_TYPES_PWS
 
     # Check if we have some sensors to load.
     if sensors_to_load := config_entry.options.get(SENSORS_TO_LOAD, []):
@@ -74,7 +75,7 @@ async def async_setup_entry(
             WeatherSensor(hass, description, coordinator)
             for description in sensor_types
             if description.key in sensors_to_load
-            and not (_wslink and description.key in BATTERY_LIST)
+            and not (is_wslink and description.key in BATTERY_LIST)
         ]
         async_add_entities(sensors)
 
@@ -184,18 +185,18 @@ class WeatherSensor(  # pyright: ignore[reportIncompatibleVariableOverride]
         if not isinstance(data, dict):
             return False
 
-        _wslink = self.coordinator.config.options.get(WSLINK)
+        is_wslink = self.coordinator.config.options.get(API_MODE) == API_MODE_WSLINK
         key = self.entity_description.key
 
         if key == WIND_AZIMUTH:
             return data.get(WIND_DIR) not in (None, "")
 
-        if key == HEAT_INDEX and not _wslink:
+        if key == HEAT_INDEX and not is_wslink:
             return data.get(OUTSIDE_TEMP) not in (None, "") and data.get(
                 OUTSIDE_HUMIDITY
             ) not in (None, "")
 
-        if key == CHILL_INDEX and not _wslink:
+        if key == CHILL_INDEX and not is_wslink:
             return data.get(OUTSIDE_TEMP) not in (None, "") and data.get(
                 WIND_SPEED
             ) not in (None, "")
@@ -312,7 +313,7 @@ class WeatherSensor(  # pyright: ignore[reportIncompatibleVariableOverride]
         if not self.available:
             return None
 
-        _wslink = self.coordinator.config.options.get(WSLINK)
+        _wslink = self.coordinator.config.options.get(API_MODE) == API_MODE_WSLINK
         data = self.coordinator.data if isinstance(self.coordinator.data, dict) else {}
 
         if self.entity_description.key == LIGHTNING_STRIKE_TIME:

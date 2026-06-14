@@ -12,16 +12,19 @@ from homeassistant.config_entries import (
 )
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import selector
 
 from .const import (
     API_ID,
     API_KEY,
+    API_MODE,
+    API_MODE_PWS,
+    API_MODE_WSLINK,
     DEV_DBG,
     DOMAIN,
     INVALID_CREDENTIALS,
     SENSORS_TO_LOAD,
     URL_WSLINK_ADDON,
-    WSLINK,
 )
 from .helpers import ha_https_enabled
 
@@ -57,14 +60,25 @@ class ConfigOptionsFlowHandler(OptionsFlow):
         self.user_data = {
             API_ID: entry_data.get(API_ID),
             API_KEY: entry_data.get(API_KEY),
-            WSLINK: entry_data.get(WSLINK, False),
+            API_MODE: entry_data.get(API_MODE, API_MODE_PWS),
             DEV_DBG: entry_data.get(DEV_DBG, False),
         }
 
         self.user_data_schema = {
             vol.Required(API_ID, default=self.user_data.get(API_ID, "")): str,
             vol.Required(API_KEY, default=self.user_data.get(API_KEY, "")): str,
-            vol.Optional(WSLINK, default=self.user_data.get(WSLINK, False)): bool,
+            vol.Required(
+                API_MODE,
+                default=self.user_data.get(API_MODE, API_MODE_PWS),
+            ): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=[
+                        {"value": API_MODE_PWS, "label": "PWS / WU"},
+                        {"value": API_MODE_WSLINK, "label": "WS-Link"},
+                    ],
+                    mode=selector.SelectSelectorMode.DROPDOWN,
+                )
+            ),
             vol.Optional(DEV_DBG, default=self.user_data.get(DEV_DBG, False)): bool,
         }
 
@@ -152,7 +166,21 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
     data_schema = {
         vol.Required(API_ID): str,
         vol.Required(API_KEY): str,
-        vol.Optional(WSLINK): bool,
+        vol.Required(
+            API_MODE,
+            default=API_MODE_PWS,
+        ): selector.SelectSelector(
+            selector.SelectSelectorConfig(
+                options=[
+                    {
+                        "value": API_MODE_PWS,
+                        "label": "PWS (Personal Weather Station / WeatherUnderground)",
+                    },
+                    {"value": API_MODE_WSLINK, "label": "WS-Link"},
+                ],
+                mode=selector.SelectSelectorMode.DROPDOWN,
+            )
+        ),
         vol.Optional(DEV_DBG): bool,
     }
 

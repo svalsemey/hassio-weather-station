@@ -17,7 +17,14 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import WeatherDataUpdateCoordinator
-from .const import BATTERY_LIST, DOMAIN, MANUFACTURER, SENSORS_TO_LOAD, WSLINK
+from .const import (
+    API_MODE,
+    API_MODE_WSLINK,
+    BATTERY_LIST,
+    DOMAIN,
+    MANUFACTURER,
+    SENSORS_TO_LOAD,
+)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -74,7 +81,7 @@ async def async_setup_entry(
     coordinator: WeatherDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     # Binary battery fields are WSLink-specific in this integration.
-    if not config_entry.options.get(WSLINK, False):
+    if config_entry.options.get(API_MODE) != API_MODE_WSLINK:
         return
 
     sensors_to_load = config_entry.options.get(SENSORS_TO_LOAD, [])
