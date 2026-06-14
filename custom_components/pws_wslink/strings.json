@@ -42,7 +42,7 @@
         },
         "step": {
             "basic": {
-                "description": "Provide API ID and API KEY so the Weather Station can access HomeAssistant",
+                "description": "Provide API ID and API KEY so the Weather Station can access Home Assistant",
                 "title": "Configure credentials",
                 "data": {
                     "API_ID": "API ID / Station ID",
@@ -54,7 +54,7 @@
                     "API_ID": "API ID is the Station ID you set in the Weather Station.",
                     "API_KEY": "API KEY is the password you set in the Weather Station.",
                     "api_mode": "Select which protocol your station uses to send data.",
-                    "dev_debug_checkbox": "Enable only if you want to send debuging data to the developer."
+                    "dev_debug_checkbox": "Enable only if you want to send debugging data to the developer."
                 }
             },
             "migration": {
@@ -78,52 +78,26 @@
             }
         }
     },
+    "device": {
+        "hub": { "name": "Base station" },
+        "type1": { "name": "Outdoor sensor" },
+        "type234": { "name": "Channel {channel}" },
+        "type5": { "name": "Lightning sensor" },
+        "type6": { "name": "Water leak sensor {channel}" },
+        "type8": { "name": "PM sensor" },
+        "type9": { "name": "HCHO/VOC sensor" },
+        "type10": { "name": "CO₂ sensor" },
+        "type11": { "name": "CO sensor" }
+    },
     "entity": {
         "binary_sensor": {
-            "outside_battery": {
-                "name": "Outside battery"
-            },
-            "indoor_battery": {
-                "name": "Console battery"
-            },
-            "ch1_battery": {
-                "name": "Channel 1 battery"
-            },
-            "ch2_battery": {
-                "name": "Channel 2 battery"
-            },
-            "ch3_battery": {
-                "name": "Channel 3 battery"
-            },
-            "ch4_battery": {
-                "name": "Channel 4 battery"
-            },
-            "ch5_battery": {
-                "name": "Channel 5 battery"
-            },
-            "ch6_battery": {
-                "name": "Channel 6 battery"
-            },
-            "ch7_battery": {
-                "name": "Channel 7 battery"
-            },
-            "t5_battery": {
-                "name": "Lightning sensor battery"
-            }
+            "battery": { "name": "Battery" },
+            "water_leak": { "name": "Water leak" }
         },
         "sensor": {
-            "indoor_temp": {
-                "name": "Indoor temperature"
-            },
-            "indoor_humidity": {
-                "name": "Indoor humidity"
-            },
-            "outside_temp": {
-                "name": "Outside Temperature"
-            },
-            "outside_humidity": {
-                "name": "Outside humidity"
-            },
+            "temperature": { "name": "Temperature" },
+            "humidity": { "name": "Humidity" },
+            "battery": { "name": "Battery" },
             "uv": {
                 "name": "UV index"
             },
@@ -184,48 +158,6 @@
             "solar_radiation": {
                 "name": "Solar irradiance"
             },
-            "ch1_temp": {
-                "name": "Channel 1 temperature"
-            },
-            "ch1_humidity": {
-                "name": "Channel 1 humidity"
-            },
-            "ch2_temp": {
-                "name": "Channel 2 temperature"
-            },
-            "ch2_humidity": {
-                "name": "Channel 2 humidity"
-            },
-            "ch3_temp": {
-                "name": "Channel 3 temperature"
-            },
-            "ch3_humidity": {
-                "name": "Channel 3 humidity"
-            },
-            "ch4_temp": {
-                "name": "Channel 4 temperature"
-            },
-            "ch4_humidity": {
-                "name": "Channel 4 humidity"
-            },
-            "ch5_temp": {
-                "name": "Channel 5 temperature"
-            },
-            "ch5_humidity": {
-                "name": "Channel 5 humidity"
-            },
-            "ch6_temp": {
-                "name": "Channel 6 temperature"
-            },
-            "ch6_humidity": {
-                "name": "Channel 6 humidity"
-            },
-            "ch7_temp": {
-                "name": "Channel 7 temperature"
-            },
-            "ch7_humidity": {
-                "name": "Channel 7 humidity"
-            },
             "heat_index": {
                 "name": "Apparent temperature"
             },
@@ -259,6 +191,18 @@
             "lightning_strike_count_during_1_day": {
                 "name": "Lightning (strike count during 1 day)"
             },
+            "pm25": {
+                "name": "PM2.5"
+            },
+            "pm10": {
+                "name": "PM10"
+            },
+            "pm25_aqi": {
+                "name": "PM2.5 AQI"
+            },
+            "pm10_aqi": {
+                "name": "PM10 AQI"
+            },
             "hcho": {
                 "name": "Formaldehyde (HCHO)"
             },
@@ -272,15 +216,13 @@
                     "excellent": "Excellent"
                 }
             },
-            "t9_battery": {
-                "name": "HCHO/VOC sensor battery"
-            },
             "co2": {
-                "name": "Carbon dioxyde (CO²)"
+                "name": "Carbon dioxide (CO₂)"
             },
-            "t10_battery": {
-                "name": "CO² sensor battery"
-            }        }
+            "co": {
+                "name": "Carbon monoxide (CO)"
+            }
+        }
     },
     "exceptions": {
         "new_sensors_title": {

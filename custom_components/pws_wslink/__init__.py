@@ -16,18 +16,21 @@ from .const import (
     API_KEY,
     API_MODE,
     API_MODE_WSLINK,
+    BATTERY_LIST,
+    BATTERY_NON_BINARY,
     DEV_DBG,
     DOMAIN,
     SENSORS_TO_LOAD,
     URI_API_PWS,
     URI_API_WSLINK,
+    WATER_LEAK_LIST,
 )
 from .helpers import (
     anonymize,
     check_disabled,
     loaded_sensors,
-    remap_items,
-    remap_wslink_items,
+    remap_items_pws,
+    remap_items_wslink,
     translated_notification,
     translations,
     update_options,
@@ -40,6 +43,28 @@ PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.SENSOR]
 
 class IncorrectDataError(InvalidStateError):
     """Invalid exception."""
+
+
+def _notification_translation_candidates(sensor_key: str) -> list[str]:
+    """Return ordered translation candidates for 'new sensors' notifications.
+
+    Order:
+    1) Specific key (backward-compatible): sensor.<sensor_key>
+    2) Generic key fallback based on sensor family
+    """
+    candidates = [f"sensor.{sensor_key}"]
+
+    if sensor_key in BATTERY_LIST or sensor_key in BATTERY_NON_BINARY:
+        # Prefer binary sensor generic wording for batteries; fallback to sensor generic.
+        candidates.extend(["binary_sensor.battery", "sensor.battery"])
+    elif sensor_key in WATER_LEAK_LIST:
+        candidates.append("binary_sensor.water_leak")
+    elif sensor_key.endswith("_temp"):
+        candidates.append("sensor.temperature")
+    elif sensor_key.endswith("_humidity"):
+        candidates.append("sensor.humidity")
+
+    return candidates
 
 
 class WeatherDataUpdateCoordinator(DataUpdateCoordinator):
@@ -82,17 +107,27 @@ class WeatherDataUpdateCoordinator(DataUpdateCoordinator):
             _LOGGER.error("Unauthorised access!")
             raise HTTPUnauthorized
 
-        remaped_items = remap_wslink_items(data) if is_wslink else remap_items(data)
+        remaped_items = remap_items_wslink(data) if is_wslink else remap_items_pws(data)
 
         if sensors := check_disabled(self.hass, remaped_items, self.config):
             # Translate sensor labels only once per key.
             translated_names: list[str] = []
             for t_key in sensors:
-                name = await translations(
-                    self.hass, DOMAIN, f"sensor.{t_key}", key="name", category="entity"
-                )
-                if name:
-                    translated_names.append(name)
+                resolved_name = ""
+
+                for tr_key in _notification_translation_candidates(t_key):
+                    resolved_name = await translations(
+                        self.hass,
+                        DOMAIN,
+                        tr_key,
+                        key="name",
+                        category="entity",
+                    )
+                    if resolved_name:
+                        break
+
+                # Last fallback: keep raw key to avoid empty notification lines
+                translated_names.append(resolved_name or t_key)
 
             human_readable = "\n".join(translated_names)
 

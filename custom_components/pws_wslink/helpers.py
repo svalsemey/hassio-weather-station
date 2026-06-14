@@ -165,7 +165,7 @@ def minutes_since_to_timestamp(value: str | float | None) -> datetime | None:
     return timestamp.replace(second=0, microsecond=0)
 
 
-def remap_items(entities):
+def remap_items_pws(entities):
     """Remap items in query."""
     items = {}
     for item in entities:
@@ -175,17 +175,44 @@ def remap_items(entities):
     return items
 
 
-def remap_wslink_items(entities):
+def remap_items_wslink(entities):
     """Remap items in query for WSLink API."""
     items = {}
     for item in entities:
         if item in REMAP_ITEMS_WSLINK:
             items[REMAP_ITEMS_WSLINK[item]] = entities[item]
 
+    def _is_connected(value) -> bool | None:
+        """Return True/False when parsable, None when unknown."""
+        if value in (None, ""):
+            return None
+        try:
+            return int(float(value)) == 1
+        except TypeError, ValueError:
+            return None
+
     for conn_key, gated in CONNECTION_GATED_SENSORS.items():
-        if str(entities.get(conn_key, "0")) != "1":
-            for key in gated:
-                items.pop(key, None)
+        # connection keys are remapped in `items`
+        connected = _is_connected(items.get(conn_key))
+
+        # no connection info -> keep for backward compatibility
+        if connected is None:
+            continue
+
+        if connected:
+            continue
+
+        # IMPORTANT:
+        # If module is marked disconnected but still sends actual values,
+        # keep them so discovery/device creation can still happen.
+        has_any_value = any(
+            items.get(sensor_key) not in (None, "") for sensor_key in gated
+        )
+        if has_any_value:
+            continue
+
+        for sensor_key in gated:
+            items.pop(sensor_key, None)
 
     return items
 
@@ -230,10 +257,9 @@ def wind_dir_to_text(deg: float) -> UnitOfDir | None:
     Returns UnitOfDir or None
     """
 
-    if deg:
-        return AZIMUTH[int(abs((float(deg) - 11.25) % 360) / 22.5)]
-
-    return None
+    if deg in (None, ""):
+        return None
+    return AZIMUTH[int(abs((float(deg) - 11.25) % 360) / 22.5)]
 
 
 def battery_level_to_text(battery: int) -> UnitOfBat:

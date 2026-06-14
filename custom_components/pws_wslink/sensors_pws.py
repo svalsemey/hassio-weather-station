@@ -17,23 +17,10 @@ from homeassistant.const import (
 
 from .const import (
     BARO_PRESSURE,
-    CH1_HUMIDITY,
-    CH1_TEMP,
-    CH2_HUMIDITY,
-    CH2_TEMP,
-    CH3_HUMIDITY,
-    CH3_TEMP,
-    CH4_HUMIDITY,
-    CH4_TEMP,
-    CH5_HUMIDITY,
-    CH5_TEMP,
-    CH6_HUMIDITY,
-    CH6_TEMP,
-    CH7_HUMIDITY,
-    CH7_TEMP,
     CHILL_INDEX,
     DEW_POINT,
     HEAT_INDEX,
+    HUMIDITY,
     INDOOR_HUMIDITY,
     INDOOR_TEMP,
     OUTSIDE_HUMIDITY,
@@ -41,6 +28,9 @@ from .const import (
     RAIN_RATE,
     RAINFALL_DAILY,
     SOLAR_RADIATION,
+    T234_HUMIDITY_KEYS,
+    T234_TEMP_KEYS,
+    TEMPERATURE,
     UV,
     WIND_AZIMUTH,
     WIND_DIR,
@@ -51,43 +41,57 @@ from .const import (
 from .helpers import wind_dir_to_text
 from .sensors_common import WeatherSensorEntityDescription
 
+
+def _temp_desc(
+    key: str,
+    unit: UnitOfTemperature,
+    *,
+    icon: str = "mdi:thermometer",
+) -> WeatherSensorEntityDescription:
+    return WeatherSensorEntityDescription(
+        key=key,
+        native_unit_of_measurement=unit,
+        state_class=SensorStateClass.MEASUREMENT,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        icon=icon,
+        translation_key=TEMPERATURE,
+        value_fn=lambda data: cast("float", data),
+    )
+
+
+def _humidity_desc(
+    key: str,
+    *,
+    icon: str = "mdi:water-percent",
+) -> WeatherSensorEntityDescription:
+    return WeatherSensorEntityDescription(
+        key=key,
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        device_class=SensorDeviceClass.HUMIDITY,
+        icon=icon,
+        translation_key=HUMIDITY,
+        value_fn=lambda data: cast("int", data),
+    )
+
+
+_CHANNELS_PWS = tuple(zip(T234_TEMP_KEYS, T234_HUMIDITY_KEYS, strict=False))
+
+
+def _channel_descriptions_pws() -> tuple[WeatherSensorEntityDescription, ...]:
+    out: list[WeatherSensorEntityDescription] = []
+    for temp_key, humidity_key in _CHANNELS_PWS:
+        out.append(_temp_desc(temp_key, UnitOfTemperature.FAHRENHEIT))
+        out.append(_humidity_desc(humidity_key))
+    return tuple(out)
+
+
 SENSOR_TYPES_PWS: tuple[WeatherSensorEntityDescription, ...] = (
-    WeatherSensorEntityDescription(
-        key=INDOOR_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        icon="mdi:thermometer",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        translation_key=INDOOR_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=INDOOR_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        icon="mdi:water-percent",
-        device_class=SensorDeviceClass.HUMIDITY,
-        translation_key=INDOOR_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=OUTSIDE_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        icon="mdi:thermometer",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        translation_key=OUTSIDE_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=OUTSIDE_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        icon="mdi:cloud-percent",
-        device_class=SensorDeviceClass.HUMIDITY,
-        translation_key=OUTSIDE_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
+    _temp_desc(INDOOR_TEMP, UnitOfTemperature.FAHRENHEIT),
+    _humidity_desc(INDOOR_HUMIDITY),
+    _temp_desc(OUTSIDE_TEMP, UnitOfTemperature.FAHRENHEIT),
+    _humidity_desc(OUTSIDE_HUMIDITY, icon="mdi:cloud-percent"),
     WeatherSensorEntityDescription(
         key=DEW_POINT,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
@@ -185,139 +189,7 @@ SENSOR_TYPES_PWS: tuple[WeatherSensorEntityDescription, ...] = (
         translation_key=UV,
         value_fn=lambda data: cast("float", data),
     ),
-    WeatherSensorEntityDescription(
-        key=CH1_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermometer",
-        translation_key=CH1_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH1_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.HUMIDITY,
-        icon="mdi:water-percent",
-        translation_key=CH1_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH2_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermometer",
-        translation_key=CH2_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH2_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.HUMIDITY,
-        icon="mdi:water-percent",
-        translation_key=CH2_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH3_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermometer",
-        translation_key=CH3_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH3_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.HUMIDITY,
-        icon="mdi:water-percent",
-        translation_key=CH3_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH4_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermometer",
-        translation_key=CH4_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH4_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.HUMIDITY,
-        icon="mdi:water-percent",
-        translation_key=CH4_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH5_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermometer",
-        translation_key=CH5_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH5_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.HUMIDITY,
-        icon="mdi:water-percent",
-        translation_key=CH5_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH6_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermometer",
-        translation_key=CH6_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH6_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.HUMIDITY,
-        icon="mdi:water-percent",
-        translation_key=CH6_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH7_TEMP,
-        native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermometer",
-        translation_key=CH7_TEMP,
-        value_fn=lambda data: cast("float", data),
-    ),
-    WeatherSensorEntityDescription(
-        key=CH7_HUMIDITY,
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.HUMIDITY,
-        icon="mdi:water-percent",
-        translation_key=CH7_HUMIDITY,
-        value_fn=lambda data: cast("int", data),
-    ),
+    *_channel_descriptions_pws(),
     WeatherSensorEntityDescription(
         key=HEAT_INDEX,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,

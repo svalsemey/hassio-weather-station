@@ -11,8 +11,6 @@ from homeassistant.components.binary_sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.device_registry import DeviceEntryType
-from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -20,11 +18,14 @@ from . import WeatherDataUpdateCoordinator
 from .const import (
     API_MODE,
     API_MODE_WSLINK,
+    BATTERY,
     BATTERY_LIST,
     DOMAIN,
-    MANUFACTURER,
     SENSORS_TO_LOAD,
+    WATER_LEAK,
+    WATER_LEAK_LIST,
 )
+from .device_map import device_info_for_key
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -61,14 +62,49 @@ def _battery_is_low(value: Any) -> bool | None:
     return None
 
 
+def _water_leak_detected(value: Any) -> bool | None:
+    """Map station leak state to HA moisture binary sensor semantics.
+
+    Station:
+    - 1 = leak
+    - 0 = no leak
+
+    HA moisture binary_sensor:
+    - is_on = moisture/leak detected
+    """
+    if value in (None, ""):
+        return None
+
+    try:
+        parsed = int(float(value))
+    except TypeError, ValueError:
+        return None
+
+    if parsed == 1:
+        return True
+    if parsed == 0:
+        return False
+    return None
+
+
 BATTERY_BINARY_SENSORS: tuple[BatteryBinarySensorEntityDescription, ...] = tuple(
     BatteryBinarySensorEntityDescription(
         key=battery_key,
-        translation_key=battery_key,
+        translation_key=BATTERY,
         device_class=BinarySensorDeviceClass.BATTERY,
         value_fn=_battery_is_low,
     )
     for battery_key in BATTERY_LIST
+)
+
+WATER_LEAK_BINARY_SENSORS: tuple[BatteryBinarySensorEntityDescription, ...] = tuple(
+    BatteryBinarySensorEntityDescription(
+        key=leak_key,
+        translation_key=WATER_LEAK,
+        device_class=BinarySensorDeviceClass.MOISTURE,
+        value_fn=_water_leak_detected,
+    )
+    for leak_key in WATER_LEAK_LIST
 )
 
 
@@ -90,10 +126,9 @@ async def async_setup_entry(
 
     entities = [
         WeatherBatteryBinarySensor(coordinator, description)
-        for description in BATTERY_BINARY_SENSORS
+        for description in (*BATTERY_BINARY_SENSORS, *WATER_LEAK_BINARY_SENSORS)
         if description.key in sensors_to_load
     ]
-
     if entities:
         async_add_entities(entities)
 
@@ -160,15 +195,10 @@ class WeatherBatteryBinarySensor(
         return self._source_present_in_payload()
 
     @property
-    def device_info(self) -> DeviceInfo:
-        """Return device info."""
-        return DeviceInfo(
-            connections=set(),
-            name="Weather Station",
-            entry_type=DeviceEntryType.SERVICE,
-            identifiers={(DOMAIN,)},
-            manufacturer=MANUFACTURER,
-            model="Weather Station",
+    def device_info(self):
+        """Attach binary sensor to hub or corresponding module device."""
+        return device_info_for_key(
+            self.coordinator.config_entry, self.entity_description.key
         )
 
     def _source_present_in_payload(self) -> bool:

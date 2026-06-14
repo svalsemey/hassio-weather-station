@@ -77,52 +77,26 @@
             }
         }
     },
+    "device": {
+        "hub": { "name": "Station de base" },
+        "type1": { "name": "Capteur extérieur" },
+        "type234": { "name": "Canal {channel}" },
+        "type5": { "name": "Détecteur de foudre" },
+        "type6": { "name": "Détecteur de fuite d’eau {channel}" },
+        "type8": { "name": "Capteur PM2.5/PM10" },
+        "type9": { "name": "Capteur HCHO/COV" },
+        "type10": { "name": "Capteur CO₂" },
+        "type11": { "name": "Détecteur de monoxyde de carbone" }
+    },
     "entity": {
         "binary_sensor": {
-            "outside_battery": {
-                "name": "Module extérieur Batterie"
-            },
-            "indoor_battery": {
-                "name": "Module intérieur batterie"
-            },
-            "ch1_battery": {
-                "name": "Canal 1 batterie"
-            },
-            "ch2_battery": {
-                "name": "Canal 2 batterie"
-            },
-            "ch3_battery": {
-                "name": "Canal 3 batterie"
-            },
-            "ch4_battery": {
-                "name": "Canal 4 batterie"
-            },
-            "ch5_battery": {
-                "name": "Canal 5 batterie"
-            },
-            "ch6_battery": {
-                "name": "Canal 6 batterie"
-            },
-            "ch7_battery": {
-                "name": "Canal 7 batterie"
-            },
-            "t5_battery": {
-                "name": "Capteur de foudre batterie"
-            }
+            "battery": { "name": "Batterie" },
+            "water_leak": { "name": "Fuite d’eau" }
         },
         "sensor": {
-            "indoor_temp": {
-                "name": "Module intérieur température"
-            },
-            "indoor_humidity": {
-                "name": "Module intérieur humidité"
-            },
-            "outside_temp": {
-                "name": "Module extérieur température"
-            },
-            "outside_humidity": {
-                "name": "Module extérieur humidité"
-            },
+            "temperature": { "name": "Température" },
+            "humidity": { "name": "Humidité" },
+            "battery": { "name": "Batterie" },
             "uv": {
                 "name": "Indice UV"
             },
@@ -183,48 +157,6 @@
             "solar_radiation": {
                 "name": "Irradiance solaire"
             },
-            "ch1_temp": {
-                "name": "Canal 1 température"
-            },
-            "ch1_humidity": {
-                "name": "Canal 1 humidité"
-            },
-            "ch2_temp": {
-                "name": "Canal 2 température"
-            },
-            "ch2_humidity": {
-                "name": "Canal 2 humidité"
-            },
-            "ch3_temp": {
-                "name": "Canal 3 température"
-            },
-            "ch3_humidity": {
-                "name": "Canal 3 humidité"
-            },
-            "ch4_temp": {
-                "name": "Canal 4 température"
-            },
-            "ch4_humidity": {
-                "name": "Canal 4 humidité"
-            },
-            "ch5_temp": {
-                "name": "Canal 5 température"
-            },
-            "ch5_humidity": {
-                "name": "Canal 5 humidité"
-            },
-            "ch6_temp": {
-                "name": "Canal 6 température"
-            },
-            "ch6_humidity": {
-                "name": "Canal 6 humidité"
-            },
-            "ch7_temp": {
-                "name": "Canal 7 température"
-            },
-            "ch7_humidity": {
-                "name": "Canal 7 humidité"
-            },
             "heat_index": {
                 "name": "Indice de chaleur"
             },
@@ -258,6 +190,18 @@
             "lightning_strike_count_during_1_day": {
                 "name": "Foudre (nombre d’impacts sur 1 jour)"
             },
+            "pm25": {
+                "name": "PM2.5"
+            },
+            "pm10": {
+                "name": "PM10"
+            },
+            "pm25_aqi": {
+                "name": "PM2.5 AQI"
+            },
+            "pm10_aqi": {
+                "name": "PM10 AQI"
+            },
             "hcho": {
                 "name": "Formaldéhyde (HCHO)"
             },
@@ -271,14 +215,11 @@
                     "excellent": "Excellent"
                 }
             },
-            "t9_battery": {
-                "name": "Capteur HCHO/COV batterie"
-            },
             "co2": {
-                "name": "Dioxyde de carbone (CO²)"
+                "name": "Dioxyde de carbone (CO₂)"
             },
-            "t10_battery": {
-                "name": "Capteur CO² batterie"
+            "co": {
+                "name": "Monoxyde de carbone (CO)"
             }
         }
     },

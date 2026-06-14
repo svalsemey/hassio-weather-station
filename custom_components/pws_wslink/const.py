@@ -4,7 +4,7 @@ from enum import StrEnum
 from typing import Final
 
 DOMAIN = "pws_wslink"
-MANUFACTURER = "PWS / WS-Link"
+MANUFACTURER = "PWS / WSLink"
 URI_API_PWS = "/weatherstation/updateweatherstation.php"
 URI_API_WSLINK = "/data/upload.php"
 URL_WSLINK_ADDON: Final = "https://github.com/schizza/wslink-addon"
@@ -12,8 +12,8 @@ DATABASE_PATH = "/config/home-assistant_v2.db"
 
 ICON = "mdi:weather"
 
-API_KEY = "API_KEY"
 API_ID = "API_ID"
+API_KEY = "API_KEY"
 
 SENSORS_TO_LOAD: Final = "sensors_to_load"
 SENSOR_TO_MIGRATE: Final = "sensor_to_migrate"
@@ -38,7 +38,9 @@ INVALID_CREDENTIALS: Final = [
 
 
 BARO_PRESSURE: Final = "baro_pressure"
+BATTERY: Final = "battery"
 DEW_POINT: Final = "dew_point"
+HUMIDITY: Final = "humidity"
 INDOOR_TEMP: Final = "indoor_temp"
 INDOOR_HUMIDITY: Final = "indoor_humidity"
 INDOOR_BATTERY: Final = "indoor_battery"
@@ -46,6 +48,7 @@ OUTSIDE_TEMP: Final = "outside_temp"
 OUTSIDE_HUMIDITY: Final = "outside_humidity"
 OUTSIDE_CONNECTION: Final = "outside_connection"
 OUTSIDE_BATTERY: Final = "outside_battery"
+TEMPERATURE: Final = "temperature"
 WIND_SPEED: Final = "wind_speed"
 WIND_GUST: Final = "wind_gust"
 WIND_DIR: Final = "wind_dir"
@@ -58,38 +61,17 @@ RAINFALL_YEARLY: Final = "rainfall_yearly"
 RAINFALL_DAILY: Final = "rainfall_daily"
 SOLAR_RADIATION: Final = "solar_radiation"
 UV: Final = "uv"
-CH1_TEMP: Final = "ch1_temp"
-CH1_HUMIDITY: Final = "ch1_humidity"
-CH1_CONNECTION: Final = "ch1_connection"
-CH1_BATTERY: Final = "ch1_battery"
-CH2_TEMP: Final = "ch2_temp"
-CH2_HUMIDITY: Final = "ch2_humidity"
-CH2_CONNECTION: Final = "ch2_connection"
-CH2_BATTERY: Final = "ch2_battery"
-CH3_TEMP: Final = "ch3_temp"
-CH3_HUMIDITY: Final = "ch3_humidity"
-CH3_CONNECTION: Final = "ch3_connection"
-CH3_BATTERY: Final = "ch3_battery"
-CH4_TEMP: Final = "ch4_temp"
-CH4_HUMIDITY: Final = "ch4_humidity"
-CH4_CONNECTION: Final = "ch4_connection"
-CH4_BATTERY: Final = "ch4_battery"
-CH5_TEMP: Final = "ch5_temp"
-CH5_HUMIDITY: Final = "ch5_humidity"
-CH5_CONNECTION: Final = "ch5_connection"
-CH5_BATTERY: Final = "ch5_battery"
-CH6_TEMP: Final = "ch6_temp"
-CH6_HUMIDITY: Final = "ch6_humidity"
-CH6_CONNECTION: Final = "ch6_connection"
-CH6_BATTERY: Final = "ch6_battery"
-CH7_TEMP: Final = "ch7_temp"
-CH7_HUMIDITY: Final = "ch7_humidity"
-CH7_CONNECTION: Final = "ch7_connection"
-CH7_BATTERY: Final = "ch7_battery"
 HEAT_INDEX: Final = "heat_index"
 FEELS_LIKE: Final = "feels_like"
 CHILL_INDEX: Final = "chill_index"
 WBGT_TEMP: Final = "wbgt_temp"
+
+# Type2/3/4 channels
+T234_TEMP_KEYS: list[str] = [f"ch{i}_temp" for i in range(1, 8)]
+T234_HUMIDITY_KEYS: list[str] = [f"ch{i}_humidity" for i in range(1, 8)]
+T234_BATTERY_KEYS: list[str] = [f"ch{i}_battery" for i in range(1, 8)]
+T234_CONNECTION_KEYS: list[str] = [f"ch{i}_connection" for i in range(1, 8)]
+
 
 # T5 sensors are lightning related
 T5_BATTERY: Final = "t5_battery"
@@ -106,17 +88,38 @@ LIGHTNING_STRIKE_COUNT_DURING_30_MINUTES: Final = (
 LIGHTNING_STRIKE_COUNT_DURING_1_HOUR: Final = "lightning_strike_count_during_1_hour"
 LIGHTNING_STRIKE_COUNT_DURING_1_DAY: Final = "lightning_strike_count_during_1_day"
 
-# T9 sensors are HCHO and VOC
+# Type6 (water leak channels 1..7)
+T6_WATER_LEAK_KEYS: list[str] = [f"t6_c{i}_water_leak" for i in range(1, 8)]
+T6_BATTERY_KEYS: list[str] = [f"t6_c{i}_battery" for i in range(1, 8)]
+T6_CONNECTION_KEYS: list[str] = [f"t6_c{i}_connection" for i in range(1, 8)]
+
+# Type 8 (PM2.5/PM10)
+T8_BATTERY: Final = "t8_battery"
+T8_CONN: Final = "t8_conn"
+PM25: Final = "pm25"
+PM10: Final = "pm10"
+PM25_AQI: Final = "pm25_aqi"
+PM10_AQI: Final = "pm10_aqi"
+
+# Type 9 (HCHO/VOC)
 T9_BATTERY: Final = "t9_battery"
 T9_CONN: Final = "t9_conn"
 HCHO: Final = "hcho"
 VOC: Final = "voc"
 
-# T10 sensors are CO²
+# Type 10 (CO₂)
 T10_BATTERY: Final = "t10_battery"
 T10_CONN: Final = "t10_conn"
 CO2: Final = "co2"
 
+WATER_LEAK: Final = "water_leak"
+
+# Type11 (CO)
+T11_BATTERY: Final = "t11_battery"
+T11_CONN: Final = "t11_conn"
+CO: Final = "co"
+
+WATER_LEAK_LIST: list[str] = T6_WATER_LEAK_KEYS
 
 REMAP_ITEMS_PWS: dict[str, str] = {
     "baromin": BARO_PRESSURE,
@@ -132,20 +135,16 @@ REMAP_ITEMS_PWS: dict[str, str] = {
     "indoortempf": INDOOR_TEMP,
     "indoorhumidity": INDOOR_HUMIDITY,
     "UV": UV,
-    "soiltempf": CH1_TEMP,
-    "soilmoisture": CH1_HUMIDITY,
-    "soiltemp2f": CH2_TEMP,
-    "soilmoisture2": CH2_HUMIDITY,
-    "soiltemp3f": CH3_TEMP,
-    "soilmoisture3": CH3_HUMIDITY,
-    "soiltemp4f": CH4_TEMP,
-    "soilmoisture4": CH4_HUMIDITY,
-    "soiltemp5f": CH5_TEMP,
-    "soilmoisture5": CH5_HUMIDITY,
-    "soiltemp6f": CH6_TEMP,
-    "soilmoisture6": CH6_HUMIDITY,
-    "soiltemp7f": CH7_TEMP,
-    "soilmoisture7": CH7_HUMIDITY,
+    **{
+        key: T234_TEMP_KEYS[i]
+        for i, key in enumerate(["soiltempf", *[f"soiltemp{n}f" for n in range(2, 8)]])
+    },
+    **{
+        key: T234_HUMIDITY_KEYS[i]
+        for i, key in enumerate(
+            ["soilmoisture", *[f"soilmoisture{n}" for n in range(2, 8)]]
+        )
+    },
 }
 
 REMAP_ITEMS_WSLINK: dict[str, str] = {
@@ -173,34 +172,10 @@ REMAP_ITEMS_WSLINK: dict[str, str] = {
     "t1rainyr": RAINFALL_YEARLY,
     "t1bat": OUTSIDE_BATTERY,
     "t1cn": OUTSIDE_CONNECTION,
-    "t234c1tem": CH1_TEMP,
-    "t234c1hum": CH1_HUMIDITY,
-    "t234c1bat": CH1_BATTERY,
-    "t234c1cn": CH1_CONNECTION,
-    "t234c2tem": CH2_TEMP,
-    "t234c2hum": CH2_HUMIDITY,
-    "t234c2bat": CH2_BATTERY,
-    "t234c2cn": CH2_CONNECTION,
-    "t234c3tem": CH3_TEMP,
-    "t234c3hum": CH3_HUMIDITY,
-    "t234c3bat": CH3_BATTERY,
-    "t234c3cn": CH3_CONNECTION,
-    "t234c4tem": CH4_TEMP,
-    "t234c4hum": CH4_HUMIDITY,
-    "t234c4bat": CH4_BATTERY,
-    "t234c4cn": CH4_CONNECTION,
-    "t234c5tem": CH5_TEMP,
-    "t234c5hum": CH5_HUMIDITY,
-    "t234c5bat": CH5_BATTERY,
-    "t234c5cn": CH5_CONNECTION,
-    "t234c6tem": CH6_TEMP,
-    "t234c6hum": CH6_HUMIDITY,
-    "t234c6bat": CH6_BATTERY,
-    "t234c6cn": CH6_CONNECTION,
-    "t234c7tem": CH7_TEMP,
-    "t234c7hum": CH7_HUMIDITY,
-    "t234c7bat": CH7_BATTERY,
-    "t234c7cn": CH7_CONNECTION,
+    **{f"t234c{i + 1}tem": T234_TEMP_KEYS[i] for i in range(7)},
+    **{f"t234c{i + 1}hum": T234_HUMIDITY_KEYS[i] for i in range(7)},
+    **{f"t234c{i + 1}bat": T234_BATTERY_KEYS[i] for i in range(7)},
+    **{f"t234c{i + 1}cn": T234_CONNECTION_KEYS[i] for i in range(7)},
     "t5lst": LIGHTNING_STRIKE_TIME,
     "t5lskm": LIGHTNING_DISTANCE,
     "t5lsf": LIGHTNING_STRIKE_COUNT_LAST_HOUR,
@@ -210,38 +185,33 @@ REMAP_ITEMS_WSLINK: dict[str, str] = {
     "t5ls1dtc": LIGHTNING_STRIKE_COUNT_DURING_1_DAY,
     "t5lsbat": T5_BATTERY,
     "t5lscn": T5_CONN,
+    **{f"t6c{i + 1}wls": T6_WATER_LEAK_KEYS[i] for i in range(7)},
+    **{f"t6c{i + 1}bat": T6_BATTERY_KEYS[i] for i in range(7)},
+    **{f"t6c{i + 1}cn": T6_CONNECTION_KEYS[i] for i in range(7)},
+    "t8pm25": PM25,
+    "t8pm10": PM10,
+    "t8pm25ai": PM25_AQI,
+    "t8pm10ai": PM10_AQI,
+    "t8bat": T8_BATTERY,
+    "t8cn": T8_CONN,
     "t9hcho": HCHO,
     "t9voclv": VOC,
     "t9bat": T9_BATTERY,  # T9 battery is 0-5, where 5 is full
+    "t9cn": T9_CONN,
     "t10co2": CO2,
     "t10bat": T10_BATTERY,  # T10 battery is 0-5, where 5 is full
+    "t10cn": T10_CONN,
+    "t11co": CO,
+    "t11bat": T11_BATTERY,
+    "t11cn": T11_CONN,
 }
 
-
 DISABLED_BY_DEFAULT: Final = [
-    CH1_TEMP,
-    CH1_HUMIDITY,
-    CH1_BATTERY,
-    CH2_TEMP,
-    CH2_HUMIDITY,
-    CH2_BATTERY,
-    CH3_TEMP,
-    CH3_HUMIDITY,
-    CH3_BATTERY,
-    CH4_TEMP,
-    CH4_HUMIDITY,
-    CH4_BATTERY,
-    CH5_TEMP,
-    CH5_HUMIDITY,
-    CH5_BATTERY,
-    CH6_TEMP,
-    CH6_HUMIDITY,
-    CH6_BATTERY,
-    CH7_TEMP,
-    CH7_HUMIDITY,
-    CH7_BATTERY,
     OUTSIDE_BATTERY,
     WBGT_TEMP,
+    *T234_TEMP_KEYS,
+    *T234_HUMIDITY_KEYS,
+    *T234_BATTERY_KEYS,
     LIGHTNING_STRIKE_TIME,
     LIGHTNING_DISTANCE,
     LIGHTNING_STRIKE_COUNT_LAST_HOUR,
@@ -250,31 +220,85 @@ DISABLED_BY_DEFAULT: Final = [
     LIGHTNING_STRIKE_COUNT_DURING_1_HOUR,
     LIGHTNING_STRIKE_COUNT_DURING_1_DAY,
     T5_BATTERY,
+    *T6_WATER_LEAK_KEYS,
+    *T6_BATTERY_KEYS,
+    PM25,
+    PM10,
+    PM25_AQI,
+    PM10_AQI,
+    T8_BATTERY,
     HCHO,
     VOC,
     T9_BATTERY,
     CO2,
     T10_BATTERY,
+    CO,
+    T11_BATTERY,
 ]
 
 BATTERY_LIST = [
     OUTSIDE_BATTERY,
     INDOOR_BATTERY,
-    CH1_BATTERY,
-    CH2_BATTERY,
-    CH3_BATTERY,
-    CH4_BATTERY,
-    CH5_BATTERY,
-    CH6_BATTERY,
-    CH7_BATTERY,
+    *T234_BATTERY_KEYS,
     T5_BATTERY,
+    *T6_BATTERY_KEYS,
 ]
 
-BATTERY_NON_BINARY: list[str] = [T9_BATTERY, T10_BATTERY]
+BATTERY_NON_BINARY: list[str] = [T8_BATTERY, T9_BATTERY, T10_BATTERY, T11_BATTERY]
 
 CONNECTION_GATED_SENSORS: Final[dict[str, list[str]]] = {
-    "t9cn": [HCHO, VOC, T9_BATTERY],
-    "t10cn": [CO2, T10_BATTERY],
+    # Type1 (outdoor module)
+    OUTSIDE_CONNECTION: [
+        OUTSIDE_TEMP,
+        OUTSIDE_HUMIDITY,
+        FEELS_LIKE,
+        CHILL_INDEX,
+        HEAT_INDEX,
+        DEW_POINT,
+        WIND_DIR,
+        WIND_SPEED,
+        WIND_GUST,
+        RAIN_RATE,
+        RAINFALL_HOURLY,
+        RAINFALL_DAILY,
+        RAINFALL_WEEKLY,
+        RAINFALL_MONTHLY,
+        RAINFALL_YEARLY,
+        UV,
+        SOLAR_RADIATION,
+        WBGT_TEMP,
+        OUTSIDE_BATTERY,
+    ],
+    # Type2/3/4 channels
+    **{
+        T234_CONNECTION_KEYS[i]: [
+            T234_TEMP_KEYS[i],
+            T234_HUMIDITY_KEYS[i],
+            T234_BATTERY_KEYS[i],
+        ]
+        for i in range(7)
+    },
+    # Type5 lightning
+    T5_CONN: [
+        LIGHTNING_STRIKE_TIME,
+        LIGHTNING_DISTANCE,
+        LIGHTNING_STRIKE_COUNT_LAST_HOUR,
+        LIGHTNING_STRIKE_COUNT_DURING_5_MINUTES,
+        LIGHTNING_STRIKE_COUNT_DURING_30_MINUTES,
+        LIGHTNING_STRIKE_COUNT_DURING_1_HOUR,
+        LIGHTNING_STRIKE_COUNT_DURING_1_DAY,
+        T5_BATTERY,
+    ],
+    # Type6 channels
+    **{
+        T6_CONNECTION_KEYS[i]: [T6_WATER_LEAK_KEYS[i], T6_BATTERY_KEYS[i]]
+        for i in range(7)
+    },
+    # Type8 / Type9 / Type10 / Type11
+    T8_CONN: [PM25, PM10, PM25_AQI, PM10_AQI, T8_BATTERY],
+    T9_CONN: [HCHO, VOC, T9_BATTERY],
+    T10_CONN: [CO2, T10_BATTERY],
+    T11_CONN: [CO, T11_BATTERY],
 }
 
 

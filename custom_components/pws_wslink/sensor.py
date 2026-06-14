@@ -1,13 +1,11 @@
 """Sensors definition for Weather Station."""
 
 from datetime import datetime
-import logging
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.device_registry import DeviceEntryType
-from homeassistant.helpers.entity import DeviceInfo, generate_entity_id
+from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -28,7 +26,6 @@ from .const import (
     LIGHTNING_STRIKE_COUNT_DURING_30_MINUTES,
     LIGHTNING_STRIKE_COUNT_LAST_HOUR,
     LIGHTNING_STRIKE_TIME,
-    MANUFACTURER,
     OUTSIDE_HUMIDITY,
     OUTSIDE_TEMP,
     SENSORS_TO_LOAD,
@@ -37,6 +34,7 @@ from .const import (
     WIND_SPEED,
     UnitOfBat,
 )
+from .device_map import device_info_for_key
 from .helpers import (
     battery_level_to_icon,
     battery_level_to_text,
@@ -387,7 +385,7 @@ class WeatherSensor(  # pyright: ignore[reportIncompatibleVariableOverride]
         """Return the dynamic icon for battery representation."""
 
         if self.entity_description.key in BATTERY_LIST:
-            if self.native_value:
+            if self.native_value is not None:
                 battery_level = battery_level_to_text(self.native_value)
                 return battery_level_to_icon(battery_level)
 
@@ -396,13 +394,8 @@ class WeatherSensor(  # pyright: ignore[reportIncompatibleVariableOverride]
         return self.entity_description.icon
 
     @property
-    def device_info(self) -> DeviceInfo:  # pyright: ignore[reportIncompatibleVariableOverride]
-        """Device info."""
-        return DeviceInfo(
-            connections=set(),
-            name="Weather Station",
-            entry_type=DeviceEntryType.SERVICE,
-            identifiers={(DOMAIN,)},  # type: ignore[arg-type]
-            manufacturer=MANUFACTURER,
-            model="Weather Station",
+    def device_info(self):
+        """Attach entity to hub or corresponding module device."""
+        return device_info_for_key(
+            self.coordinator.config_entry, self.entity_description.key
         )

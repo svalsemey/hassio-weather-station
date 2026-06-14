@@ -45,8 +45,6 @@ class ConfigOptionsFlowHandler(OptionsFlow):
     def __init__(self) -> None:
         """Initialize flow."""
         super().__init__()
-        # self.config_entry = config_entry
-
         self.user_data: dict[str, Any] = {}
         self.user_data_schema = {}
         self.sensors: dict[str, Any] = {}
@@ -114,18 +112,18 @@ class ConfigOptionsFlowHandler(OptionsFlow):
         elif user_input[API_KEY] == user_input[API_ID]:
             errors["base"] = "valid_credentials_match"
         else:
-            # retain sensors
+            # Retain sensors
             user_input.update(self.sensors)
 
             if not ha_https_enabled(self):
                 self._pending_user_input = user_input
                 return await self.async_step_https_warning()
 
+            # Do not rename config entry title during reconfiguration
             return self.async_create_entry(title=DOMAIN, data=user_input)
 
         self.user_data = user_input
 
-        # we are ending with error msg, reshow form
         return self.async_show_form(
             step_id="basic",
             data_schema=vol.Schema(self.user_data_schema),
@@ -140,6 +138,8 @@ class ConfigOptionsFlowHandler(OptionsFlow):
             if user_input.get(CONFIRM_HTTPS):
                 if self._pending_user_input is None:
                     return self.async_abort(reason="unknown")
+
+                # Do not rename config entry title during reconfiguration
                 return self.async_create_entry(
                     title=DOMAIN, data=self._pending_user_input
                 )
@@ -215,7 +215,9 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
                 return await self.async_step_https_warning()
 
             return self.async_create_entry(
-                title=DOMAIN, data=user_input, options=user_input
+                title=str(user_input.get(API_ID) or DOMAIN),
+                data=user_input,
+                options=user_input,
             )
 
         return self.async_show_form(
@@ -232,8 +234,9 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
             if user_input.get(CONFIRM_HTTPS):
                 if self._pending_user_input is None:
                     return self.async_abort(reason="unknown")
+
                 return self.async_create_entry(
-                    title=DOMAIN,
+                    title=str(self._pending_user_input.get(API_ID) or DOMAIN),
                     data=self._pending_user_input,
                     options=self._pending_user_input,
                 )
