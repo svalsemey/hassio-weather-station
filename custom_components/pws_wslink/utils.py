@@ -132,6 +132,17 @@ def anonymize(data):
     return anonym
 
 
+def ha_https_enabled(self) -> bool:
+    """Best-effort detection of HTTPS availability for HA."""
+    internal = (self.hass.config.internal_url or "").lower()
+    external = (self.hass.config.external_url or "").lower()
+
+    if internal.startswith("https://") or external.startswith("https://"):
+        return True
+
+    return bool(getattr(self.hass.http, "ssl_certificate", None))
+
+
 def minutes_since_to_timestamp(value: str | float | None) -> datetime | None:
     """Convert minutes since last event to UTC timestamp rounded to minute.
 

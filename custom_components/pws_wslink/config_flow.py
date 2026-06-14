@@ -4,7 +4,12 @@ from typing import Any
 
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    ConfigFlowResult,
+    OptionsFlow,
+)
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 
@@ -17,6 +22,10 @@ from .const import (
     SENSORS_TO_LOAD,
     WSLINK,
 )
+
+from .utils import ha_https_enabled
+
+CONFIRM_WSLINK_NON_HTTPS = "confirm_wslink_non_https"
 
 
 class CannotConnect(HomeAssistantError):
@@ -39,6 +48,7 @@ class ConfigOptionsFlowHandler(OptionsFlow):
         self.user_data_schema = {}
         self.sensors: dict[str, Any] = {}
         self.migrate_schema = {}
+        self._pending_user_input: dict[str, Any] | None = None
 
     async def _get_entry_data(self):
         """Get entry data."""
@@ -93,6 +103,10 @@ class ConfigOptionsFlowHandler(OptionsFlow):
             # retain sensors
             user_input.update(self.sensors)
 
+            if user_input.get(WSLINK, False) and not ha_https_enabled(self):
+                self._pending_user_input = user_input
+                return await self.async_step_wslink_warning()
+
             return self.async_create_entry(title=DOMAIN, data=user_input)
 
         self.user_data = user_input
@@ -101,6 +115,30 @@ class ConfigOptionsFlowHandler(OptionsFlow):
         return self.async_show_form(
             step_id="basic",
             data_schema=vol.Schema(self.user_data_schema),
+            errors=errors,
+        )
+
+    async def async_step_wslink_warning(self, user_input=None):
+        """Warn user if WSLink is enabled while HA HTTPS is not detected."""
+        errors = {}
+
+        if user_input is not None:
+            if user_input.get(CONFIRM_WSLINK_NON_HTTPS):
+                if self._pending_user_input is None:
+                    return self.async_abort(reason="unknown")
+                return self.async_create_entry(
+                    title=DOMAIN, data=self._pending_user_input
+                )
+
+            errors["base"] = "confirm_wslink_non_https_required"
+
+        return self.async_show_form(
+            step_id="wslink_warning",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(CONFIRM_WSLINK_NON_HTTPS, default=False): bool,
+                }
+            ),
             errors=errors,
         )
 
@@ -116,6 +154,10 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
     }
 
     VERSION = 1
+
+    def __init__(self) -> None:
+        """Initialize flow."""
+        self._pending_user_input: dict[str, Any] | None = None
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
@@ -137,6 +179,10 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
         elif user_input[API_KEY] == user_input[API_ID]:
             errors["base"] = "valid_credentials_match"
         else:
+            if user_input.get(WSLINK, False) and not self._ha_https_enabled():
+                self._pending_user_input = user_input
+                return await self.async_step_wslink_warning()
+
             return self.async_create_entry(
                 title=DOMAIN, data=user_input, options=user_input
             )
@@ -144,6 +190,32 @@ class ConfigFlowHandler(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(self.data_schema),
+            errors=errors,
+        )
+
+    async def async_step_wslink_warning(self, user_input=None) -> ConfigFlowResult:
+        """Warn user if WSLink is enabled while HA HTTPS is not detected."""
+        errors = {}
+
+        if user_input is not None:
+            if user_input.get(CONFIRM_WSLINK_NON_HTTPS):
+                if self._pending_user_input is None:
+                    return self.async_abort(reason="unknown")
+                return self.async_create_entry(
+                    title=DOMAIN,
+                    data=self._pending_user_input,
+                    options=self._pending_user_input,
+                )
+
+            errors["base"] = "confirm_wslink_non_https_required"
+
+        return self.async_show_form(
+            step_id="wslink_warning",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(CONFIRM_WSLINK_NON_HTTPS, default=False): bool,
+                }
+            ),
             errors=errors,
         )
 
