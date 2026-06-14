@@ -4,6 +4,7 @@ from enum import StrEnum
 from typing import Final
 
 DOMAIN = "pws_wslink"
+MANUFACTURER = "PWS / WS-Link"
 URI_API_PWS = "/weatherstation/updateweatherstation.php"
 URI_API_WSLINK = "/data/upload.php"
 URL_WSLINK_ADDON: Final = "https://github.com/schizza/wslink-addon"

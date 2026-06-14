@@ -14,14 +14,13 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from .const import (
     API_ID,
     API_KEY,
-    URI_API_PWS,
     DEV_DBG,
     DOMAIN,
     SENSORS_TO_LOAD,
-    WSLINK,
+    URI_API_PWS,
     URI_API_WSLINK,
+    WSLINK,
 )
-from .routes import Routes, unregistered
 from .helpers import (
     anonymize,
     check_disabled,
@@ -32,6 +31,7 @@ from .helpers import (
     translations,
     update_options,
 )
+from .routes import Routes, unregistered
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.SENSOR]
@@ -105,7 +105,7 @@ class WeatherDataUpdateCoordinator(DataUpdateCoordinator):
             await translated_notification(
                 self.hass,
                 DOMAIN,
-                "added",
+                "new_sensors",
                 {"added_sensors": f"{human_readable}\n"},
             )
             if _loaded_sensors := loaded_sensors(self.config_entry):

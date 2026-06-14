@@ -24,8 +24,8 @@
                 }
             },
             "https_warning": {
-                "title": "WSLink avec Home Assistant non-HTTPS",
-                "description": "Les stations météo WSLink exigent souvent HTTPS. Aucun HTTPS n’a été détecté dans les URL de votre Home Assistant. Si votre station envoie WSLink en HTTPS, installez l’add-on proxy WSLink ({url_wslink_addon}) ou utilisez votre propre proxy HTTPS.",
+                "title": "Home Assistant non-HTTPS",
+                "description": "Les stations météo PWS/WSLink récentes exigent souvent HTTPS. Aucun HTTPS n’a été détecté dans les URL de votre Home Assistant. Si votre station envoie des données en HTTPS, installez l’add-on proxy WSLink ({url_wslink_addon}) ou utilisez votre propre proxy HTTPS.",
                 "data": {
                     "confirm_https": "Je comprends et je souhaite continuer"
                 }
@@ -286,7 +286,7 @@
         "new_sensors_title": {
             "message": "Nouveaux capteurs détectés pour la station météo"
         },
-        "new_sensors_message": {
+        "new_sensors": {
             "message": "{added_sensors}"
         }
     }

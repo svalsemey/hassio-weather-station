@@ -20,8 +20,8 @@ from .const import (
     DOMAIN,
     INVALID_CREDENTIALS,
     SENSORS_TO_LOAD,
-    WSLINK,
     URL_WSLINK_ADDON,
+    WSLINK,
 )
 from .helpers import ha_https_enabled
 

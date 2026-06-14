@@ -22,6 +22,7 @@ from .const import (
     LIGHTNING_DISTANCE,
     LIGHTNING_STRIKE_COUNT_LAST_HOUR,
     LIGHTNING_STRIKE_TIME,
+    MANUFACTURER,
     OUTSIDE_HUMIDITY,
     OUTSIDE_TEMP,
     SENSORS_TO_LOAD,
@@ -31,9 +32,6 @@ from .const import (
     WSLINK,
     UnitOfBat,
 )
-from .sensors_common import WeatherSensorEntityDescription
-from .sensors_weather import SENSOR_TYPES_WEATHER_API
-from .sensors_wslink import SENSOR_TYPES_WSLINK
 from .helpers import (
     battery_level_to_icon,
     battery_level_to_text,
@@ -41,6 +39,9 @@ from .helpers import (
     heat_index,
     minutes_since_to_timestamp,
 )
+from .sensors_common import WeatherSensorEntityDescription
+from .sensors_pws import SENSOR_TYPES_PWS
+from .sensors_wslink import SENSOR_TYPES_WSLINK
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -58,7 +59,7 @@ async def async_setup_entry(
     sensors: list = []
     _wslink = config_entry.options.get(WSLINK)
 
-    sensor_types = SENSOR_TYPES_WSLINK if _wslink else SENSOR_TYPES_WEATHER_API
+    sensor_types = SENSOR_TYPES_WSLINK if _wslink else SENSOR_TYPES_PWS
 
     # Check if we have some sensors to load.
     if sensors_to_load := config_entry.options.get(SENSORS_TO_LOAD, []):
@@ -377,6 +378,6 @@ class WeatherSensor(  # pyright: ignore[reportIncompatibleVariableOverride]
             name="Weather Station",
             entry_type=DeviceEntryType.SERVICE,
             identifiers={(DOMAIN,)},  # type: ignore[arg-type]
-            manufacturer="PWS/WU / WS-Link",
+            manufacturer=MANUFACTURER,
             model="Weather Station",
         )

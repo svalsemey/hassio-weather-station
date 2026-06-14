@@ -32,7 +32,6 @@ from .const import (
     CH7_HUMIDITY,
     CH7_TEMP,
     CHILL_INDEX,
-    RAINFALL_DAILY,
     DEW_POINT,
     HEAT_INDEX,
     INDOOR_HUMIDITY,
@@ -40,6 +39,7 @@ from .const import (
     OUTSIDE_HUMIDITY,
     OUTSIDE_TEMP,
     RAIN_RATE,
+    RAINFALL_DAILY,
     SOLAR_RADIATION,
     UV,
     WIND_AZIMUTH,
@@ -51,7 +51,7 @@ from .const import (
 from .helpers import wind_dir_to_text
 from .sensors_common import WeatherSensorEntityDescription
 
-SENSOR_TYPES_WEATHER_API: tuple[WeatherSensorEntityDescription, ...] = (
+SENSOR_TYPES_PWS: tuple[WeatherSensorEntityDescription, ...] = (
     WeatherSensorEntityDescription(
         key=INDOOR_TEMP,
         native_unit_of_measurement=UnitOfTemperature.FAHRENHEIT,

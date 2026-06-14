@@ -17,7 +17,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import WeatherDataUpdateCoordinator
-from .const import BATTERY_LIST, DOMAIN, SENSORS_TO_LOAD, WSLINK
+from .const import BATTERY_LIST, DOMAIN, MANUFACTURER, SENSORS_TO_LOAD, WSLINK
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -160,7 +160,7 @@ class WeatherBatteryBinarySensor(
             name="Weather Station",
             entry_type=DeviceEntryType.SERVICE,
             identifiers={(DOMAIN,)},
-            manufacturer="PWS/WU / WS-Link",
+            manufacturer=MANUFACTURER,
             model="Weather Station",
         )
 
